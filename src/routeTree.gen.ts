@@ -9,38 +9,251 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RewardRouteImport } from './routes/reward'
+import { Route as ParentsRouteImport } from './routes/parents'
+import { Route as JardinRouteImport } from './routes/jardin'
+import { Route as HistoiresRouteImport } from './routes/histoires'
+import { Route as DefiRouteImport } from './routes/defi'
+import { Route as ComptinesRouteImport } from './routes/comptines'
+import { Route as BadgesRouteImport } from './routes/badges'
+import { Route as AvatarRouteImport } from './routes/avatar'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ParentsParametresRouteImport } from './routes/parents.parametres'
+import { Route as ParentsEnfantsRouteImport } from './routes/parents.enfants'
+import { Route as ParentsDashboardRouteImport } from './routes/parents.dashboard'
+import { Route as ExerciseDistrictRouteImport } from './routes/exercise.$district'
 
+const RewardRoute = RewardRouteImport.update({
+  id: '/reward',
+  path: '/reward',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParentsRoute = ParentsRouteImport.update({
+  id: '/parents',
+  path: '/parents',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JardinRoute = JardinRouteImport.update({
+  id: '/jardin',
+  path: '/jardin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoiresRoute = HistoiresRouteImport.update({
+  id: '/histoires',
+  path: '/histoires',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DefiRoute = DefiRouteImport.update({
+  id: '/defi',
+  path: '/defi',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComptinesRoute = ComptinesRouteImport.update({
+  id: '/comptines',
+  path: '/comptines',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BadgesRoute = BadgesRouteImport.update({
+  id: '/badges',
+  path: '/badges',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AvatarRoute = AvatarRouteImport.update({
+  id: '/avatar',
+  path: '/avatar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ParentsParametresRoute = ParentsParametresRouteImport.update({
+  id: '/parametres',
+  path: '/parametres',
+  getParentRoute: () => ParentsRoute,
+} as any)
+const ParentsEnfantsRoute = ParentsEnfantsRouteImport.update({
+  id: '/enfants',
+  path: '/enfants',
+  getParentRoute: () => ParentsRoute,
+} as any)
+const ParentsDashboardRoute = ParentsDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => ParentsRoute,
+} as any)
+const ExerciseDistrictRoute = ExerciseDistrictRouteImport.update({
+  id: '/exercise/$district',
+  path: '/exercise/$district',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/avatar': typeof AvatarRoute
+  '/badges': typeof BadgesRoute
+  '/comptines': typeof ComptinesRoute
+  '/defi': typeof DefiRoute
+  '/histoires': typeof HistoiresRoute
+  '/jardin': typeof JardinRoute
+  '/parents': typeof ParentsRouteWithChildren
+  '/reward': typeof RewardRoute
+  '/exercise/$district': typeof ExerciseDistrictRoute
+  '/parents/dashboard': typeof ParentsDashboardRoute
+  '/parents/enfants': typeof ParentsEnfantsRoute
+  '/parents/parametres': typeof ParentsParametresRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/avatar': typeof AvatarRoute
+  '/badges': typeof BadgesRoute
+  '/comptines': typeof ComptinesRoute
+  '/defi': typeof DefiRoute
+  '/histoires': typeof HistoiresRoute
+  '/jardin': typeof JardinRoute
+  '/parents': typeof ParentsRouteWithChildren
+  '/reward': typeof RewardRoute
+  '/exercise/$district': typeof ExerciseDistrictRoute
+  '/parents/dashboard': typeof ParentsDashboardRoute
+  '/parents/enfants': typeof ParentsEnfantsRoute
+  '/parents/parametres': typeof ParentsParametresRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/avatar': typeof AvatarRoute
+  '/badges': typeof BadgesRoute
+  '/comptines': typeof ComptinesRoute
+  '/defi': typeof DefiRoute
+  '/histoires': typeof HistoiresRoute
+  '/jardin': typeof JardinRoute
+  '/parents': typeof ParentsRouteWithChildren
+  '/reward': typeof RewardRoute
+  '/exercise/$district': typeof ExerciseDistrictRoute
+  '/parents/dashboard': typeof ParentsDashboardRoute
+  '/parents/enfants': typeof ParentsEnfantsRoute
+  '/parents/parametres': typeof ParentsParametresRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/avatar'
+    | '/badges'
+    | '/comptines'
+    | '/defi'
+    | '/histoires'
+    | '/jardin'
+    | '/parents'
+    | '/reward'
+    | '/exercise/$district'
+    | '/parents/dashboard'
+    | '/parents/enfants'
+    | '/parents/parametres'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/avatar'
+    | '/badges'
+    | '/comptines'
+    | '/defi'
+    | '/histoires'
+    | '/jardin'
+    | '/parents'
+    | '/reward'
+    | '/exercise/$district'
+    | '/parents/dashboard'
+    | '/parents/enfants'
+    | '/parents/parametres'
+  id:
+    | '__root__'
+    | '/'
+    | '/avatar'
+    | '/badges'
+    | '/comptines'
+    | '/defi'
+    | '/histoires'
+    | '/jardin'
+    | '/parents'
+    | '/reward'
+    | '/exercise/$district'
+    | '/parents/dashboard'
+    | '/parents/enfants'
+    | '/parents/parametres'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AvatarRoute: typeof AvatarRoute
+  BadgesRoute: typeof BadgesRoute
+  ComptinesRoute: typeof ComptinesRoute
+  DefiRoute: typeof DefiRoute
+  HistoiresRoute: typeof HistoiresRoute
+  JardinRoute: typeof JardinRoute
+  ParentsRoute: typeof ParentsRouteWithChildren
+  RewardRoute: typeof RewardRoute
+  ExerciseDistrictRoute: typeof ExerciseDistrictRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/reward': {
+      id: '/reward'
+      path: '/reward'
+      fullPath: '/reward'
+      preLoaderRoute: typeof RewardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parents': {
+      id: '/parents'
+      path: '/parents'
+      fullPath: '/parents'
+      preLoaderRoute: typeof ParentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jardin': {
+      id: '/jardin'
+      path: '/jardin'
+      fullPath: '/jardin'
+      preLoaderRoute: typeof JardinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/histoires': {
+      id: '/histoires'
+      path: '/histoires'
+      fullPath: '/histoires'
+      preLoaderRoute: typeof HistoiresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/defi': {
+      id: '/defi'
+      path: '/defi'
+      fullPath: '/defi'
+      preLoaderRoute: typeof DefiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/comptines': {
+      id: '/comptines'
+      path: '/comptines'
+      fullPath: '/comptines'
+      preLoaderRoute: typeof ComptinesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/badges': {
+      id: '/badges'
+      path: '/badges'
+      fullPath: '/badges'
+      preLoaderRoute: typeof BadgesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/avatar': {
+      id: '/avatar'
+      path: '/avatar'
+      fullPath: '/avatar'
+      preLoaderRoute: typeof AvatarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +261,63 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/parents/parametres': {
+      id: '/parents/parametres'
+      path: '/parametres'
+      fullPath: '/parents/parametres'
+      preLoaderRoute: typeof ParentsParametresRouteImport
+      parentRoute: typeof ParentsRoute
+    }
+    '/parents/enfants': {
+      id: '/parents/enfants'
+      path: '/enfants'
+      fullPath: '/parents/enfants'
+      preLoaderRoute: typeof ParentsEnfantsRouteImport
+      parentRoute: typeof ParentsRoute
+    }
+    '/parents/dashboard': {
+      id: '/parents/dashboard'
+      path: '/dashboard'
+      fullPath: '/parents/dashboard'
+      preLoaderRoute: typeof ParentsDashboardRouteImport
+      parentRoute: typeof ParentsRoute
+    }
+    '/exercise/$district': {
+      id: '/exercise/$district'
+      path: '/exercise/$district'
+      fullPath: '/exercise/$district'
+      preLoaderRoute: typeof ExerciseDistrictRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface ParentsRouteChildren {
+  ParentsDashboardRoute: typeof ParentsDashboardRoute
+  ParentsEnfantsRoute: typeof ParentsEnfantsRoute
+  ParentsParametresRoute: typeof ParentsParametresRoute
+}
+
+const ParentsRouteChildren: ParentsRouteChildren = {
+  ParentsDashboardRoute: ParentsDashboardRoute,
+  ParentsEnfantsRoute: ParentsEnfantsRoute,
+  ParentsParametresRoute: ParentsParametresRoute,
+}
+
+const ParentsRouteWithChildren =
+  ParentsRoute._addFileChildren(ParentsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AvatarRoute: AvatarRoute,
+  BadgesRoute: BadgesRoute,
+  ComptinesRoute: ComptinesRoute,
+  DefiRoute: DefiRoute,
+  HistoiresRoute: HistoiresRoute,
+  JardinRoute: JardinRoute,
+  ParentsRoute: ParentsRouteWithChildren,
+  RewardRoute: RewardRoute,
+  ExerciseDistrictRoute: ExerciseDistrictRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
