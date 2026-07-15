@@ -1,16 +1,18 @@
 import type { ReactNode } from "react";
 
+/**
+ * PhoneFrame is now a simple pass-through wrapper.
+ * The real layout structure lives in __root.tsx (sidebar + main).
+ * On mobile it still acts as a full-screen shell.
+ */
 export function PhoneFrame({ children, dark = false }: { children: ReactNode; dark?: boolean }) {
   return (
-    <div className="min-h-screen w-full flex items-stretch justify-center bg-gradient-to-br from-ocre/20 via-paper to-terracotta/10 md:p-6">
-      <div
-        className={`w-full md:max-w-[420px] md:rounded-[44px] md:border-8 md:border-white md:ring-1 md:ring-black/5 md:shadow-2xl overflow-hidden relative flex flex-col ${
-          dark ? "bg-deep-blue text-deep-blue-foreground" : "bg-paper text-foreground"
-        }`}
-        style={{ minHeight: "100dvh" }}
-      >
-        {children}
-      </div>
+    <div
+      className={`w-full min-h-screen flex flex-col relative ${
+        dark ? "bg-[#131f24] text-white" : "bg-white text-[#3c3c3c]"
+      }`}
+    >
+      {children}
     </div>
   );
 }

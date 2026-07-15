@@ -17,6 +17,7 @@ import { Route as DefiRouteImport } from './routes/defi'
 import { Route as ComptinesRouteImport } from './routes/comptines'
 import { Route as BadgesRouteImport } from './routes/badges'
 import { Route as AvatarRouteImport } from './routes/avatar'
+import { Route as AlphabetRouteImport } from './routes/alphabet'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ParentsParametresRouteImport } from './routes/parents.parametres'
 import { Route as ParentsEnfantsRouteImport } from './routes/parents.enfants'
@@ -63,6 +64,11 @@ const AvatarRoute = AvatarRouteImport.update({
   path: '/avatar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AlphabetRoute = AlphabetRouteImport.update({
+  id: '/alphabet',
+  path: '/alphabet',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -91,6 +97,7 @@ const ExerciseDistrictRoute = ExerciseDistrictRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/alphabet': typeof AlphabetRoute
   '/avatar': typeof AvatarRoute
   '/badges': typeof BadgesRoute
   '/comptines': typeof ComptinesRoute
@@ -106,6 +113,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/alphabet': typeof AlphabetRoute
   '/avatar': typeof AvatarRoute
   '/badges': typeof BadgesRoute
   '/comptines': typeof ComptinesRoute
@@ -122,6 +130,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/alphabet': typeof AlphabetRoute
   '/avatar': typeof AvatarRoute
   '/badges': typeof BadgesRoute
   '/comptines': typeof ComptinesRoute
@@ -139,6 +148,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/alphabet'
     | '/avatar'
     | '/badges'
     | '/comptines'
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/alphabet'
     | '/avatar'
     | '/badges'
     | '/comptines'
@@ -169,6 +180,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/alphabet'
     | '/avatar'
     | '/badges'
     | '/comptines'
@@ -185,6 +197,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AlphabetRoute: typeof AlphabetRoute
   AvatarRoute: typeof AvatarRoute
   BadgesRoute: typeof BadgesRoute
   ComptinesRoute: typeof ComptinesRoute
@@ -254,6 +267,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AvatarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/alphabet': {
+      id: '/alphabet'
+      path: '/alphabet'
+      fullPath: '/alphabet'
+      preLoaderRoute: typeof AlphabetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -309,6 +329,7 @@ const ParentsRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AlphabetRoute: AlphabetRoute,
   AvatarRoute: AvatarRoute,
   BadgesRoute: BadgesRoute,
   ComptinesRoute: ComptinesRoute,
