@@ -19,6 +19,8 @@ import { Route as BadgesRouteImport } from './routes/badges'
 import { Route as AvatarRouteImport } from './routes/avatar'
 import { Route as AlphabetRouteImport } from './routes/alphabet'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ParentsIndexRouteImport } from './routes/parents.index'
+import { Route as RaconteChapterRouteImport } from './routes/raconte.$chapter'
 import { Route as ParentsParametresRouteImport } from './routes/parents.parametres'
 import { Route as ParentsEnfantsRouteImport } from './routes/parents.enfants'
 import { Route as ParentsDashboardRouteImport } from './routes/parents.dashboard'
@@ -74,6 +76,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ParentsIndexRoute = ParentsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ParentsRoute,
+} as any)
+const RaconteChapterRoute = RaconteChapterRouteImport.update({
+  id: '/raconte/$chapter',
+  path: '/raconte/$chapter',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ParentsParametresRoute = ParentsParametresRouteImport.update({
   id: '/parametres',
   path: '/parametres',
@@ -110,6 +122,8 @@ export interface FileRoutesByFullPath {
   '/parents/dashboard': typeof ParentsDashboardRoute
   '/parents/enfants': typeof ParentsEnfantsRoute
   '/parents/parametres': typeof ParentsParametresRoute
+  '/raconte/$chapter': typeof RaconteChapterRoute
+  '/parents/': typeof ParentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -120,12 +134,13 @@ export interface FileRoutesByTo {
   '/defi': typeof DefiRoute
   '/histoires': typeof HistoiresRoute
   '/jardin': typeof JardinRoute
-  '/parents': typeof ParentsRouteWithChildren
   '/reward': typeof RewardRoute
   '/exercise/$district': typeof ExerciseDistrictRoute
   '/parents/dashboard': typeof ParentsDashboardRoute
   '/parents/enfants': typeof ParentsEnfantsRoute
   '/parents/parametres': typeof ParentsParametresRoute
+  '/raconte/$chapter': typeof RaconteChapterRoute
+  '/parents': typeof ParentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -143,6 +158,8 @@ export interface FileRoutesById {
   '/parents/dashboard': typeof ParentsDashboardRoute
   '/parents/enfants': typeof ParentsEnfantsRoute
   '/parents/parametres': typeof ParentsParametresRoute
+  '/raconte/$chapter': typeof RaconteChapterRoute
+  '/parents/': typeof ParentsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -161,6 +178,8 @@ export interface FileRouteTypes {
     | '/parents/dashboard'
     | '/parents/enfants'
     | '/parents/parametres'
+    | '/raconte/$chapter'
+    | '/parents/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -171,12 +190,13 @@ export interface FileRouteTypes {
     | '/defi'
     | '/histoires'
     | '/jardin'
-    | '/parents'
     | '/reward'
     | '/exercise/$district'
     | '/parents/dashboard'
     | '/parents/enfants'
     | '/parents/parametres'
+    | '/raconte/$chapter'
+    | '/parents'
   id:
     | '__root__'
     | '/'
@@ -193,6 +213,8 @@ export interface FileRouteTypes {
     | '/parents/dashboard'
     | '/parents/enfants'
     | '/parents/parametres'
+    | '/raconte/$chapter'
+    | '/parents/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -207,6 +229,7 @@ export interface RootRouteChildren {
   ParentsRoute: typeof ParentsRouteWithChildren
   RewardRoute: typeof RewardRoute
   ExerciseDistrictRoute: typeof ExerciseDistrictRoute
+  RaconteChapterRoute: typeof RaconteChapterRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -281,6 +304,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/parents/': {
+      id: '/parents/'
+      path: '/'
+      fullPath: '/parents/'
+      preLoaderRoute: typeof ParentsIndexRouteImport
+      parentRoute: typeof ParentsRoute
+    }
+    '/raconte/$chapter': {
+      id: '/raconte/$chapter'
+      path: '/raconte/$chapter'
+      fullPath: '/raconte/$chapter'
+      preLoaderRoute: typeof RaconteChapterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/parents/parametres': {
       id: '/parents/parametres'
       path: '/parametres'
@@ -316,12 +353,14 @@ interface ParentsRouteChildren {
   ParentsDashboardRoute: typeof ParentsDashboardRoute
   ParentsEnfantsRoute: typeof ParentsEnfantsRoute
   ParentsParametresRoute: typeof ParentsParametresRoute
+  ParentsIndexRoute: typeof ParentsIndexRoute
 }
 
 const ParentsRouteChildren: ParentsRouteChildren = {
   ParentsDashboardRoute: ParentsDashboardRoute,
   ParentsEnfantsRoute: ParentsEnfantsRoute,
   ParentsParametresRoute: ParentsParametresRoute,
+  ParentsIndexRoute: ParentsIndexRoute,
 }
 
 const ParentsRouteWithChildren =
@@ -339,6 +378,7 @@ const rootRouteChildren: RootRouteChildren = {
   ParentsRoute: ParentsRouteWithChildren,
   RewardRoute: RewardRoute,
   ExerciseDistrictRoute: ExerciseDistrictRoute,
+  RaconteChapterRoute: RaconteChapterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

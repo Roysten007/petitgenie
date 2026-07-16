@@ -1,15 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PhoneFrame } from "@/components/kpodji/PhoneFrame";
 import { useKpodji } from "@/lib/kpodji-store";
-import { ArrowLeft, Users, Settings, TrendingUp, Clock, Flame, BookOpen, Lightbulb } from "lucide-react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { sfx } from "@/lib/sfx";
 
 export const Route = createFileRoute("/parents/dashboard")({
   component: ParentDashboard,
 });
 
 function ParentDashboard() {
-  const { profiles, activeProfileId, setActiveProfileId, activeProfile } = useKpodji();
+  const { profiles, activeProfileId, setActiveProfileId, activeProfile, updateProfileSettings, setLastRaconteFiche } = useKpodji();
 
   const tips = useMemo(() => {
     if (activeProfile.levelBracket === "4-6") {
@@ -33,32 +33,39 @@ function ParentDashboard() {
     }
   }, [activeProfile.levelBracket]);
 
-  const summaryText = useMemo(() => {
-    const p = activeProfile;
-    if (p.levelBracket === "4-6") {
-      return `Cette semaine, ${p.name} a fait de super progrès ! Elle s'est entraînée à compter les fruits 🥭 et a appris de nouveaux mots simples en anglais. Elle adore écouter les comptines.`;
-    } else if (p.levelBracket === "9-10") {
-      return `Excellente semaine pour ${p.name}. Il maîtrise le calcul de monnaie en FCFA, comprend mieux le fonctionnement du cycle de l'eau et s'initie activement à la citoyenneté.`;
-    } else {
-      return `Superbe assiduité pour ${p.name} ! Ses exercices de calcul et son apprentissage de l'anglais progressent très bien. Elle a complété 3 mini-défis de Sciences.`;
-    }
-  }, [activeProfile]);
+  const handleClearFiche = () => {
+    sfx.playSuccess();
+    setLastRaconteFiche(null);
+  };
+
+  const handleLevelChange = (module: "alphabet" | "marche" | "science", lvl: 1 | 2 | 3) => {
+    sfx.playTap();
+    if (module === "alphabet") updateProfileSettings(activeProfileId, { levelAlphabet: lvl });
+    if (module === "marche") updateProfileSettings(activeProfileId, { levelMarche: lvl });
+    if (module === "science") updateProfileSettings(activeProfileId, { levelScience: lvl });
+  };
+
+  const handleTimeLimitChange = (limit: number) => {
+    sfx.playTap();
+    updateProfileSettings(activeProfileId, { timeLimit: limit });
+  };
 
   return (
     <PhoneFrame>
       <div className="px-5 pt-12 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Link to="/parents" className="size-10 bg-white rounded-full shadow ring-1 ring-black/5 grid place-items-center">
-            <ArrowLeft className="size-4 text-deep-blue" />
+          <Link to="/parents" className="size-10 bg-white rounded-full shadow ring-1 ring-black/5 grid place-items-center active:scale-90 transition-transform">
+            <i className="fa-solid fa-arrow-left text-deep-blue" />
           </Link>
           <div>
-            <p className="text-[11px] font-display font-extrabold uppercase tracking-widest text-terracotta">Espace parent</p>
-            <h1 className="font-display text-xl font-extrabold text-deep-blue">Suivi & Progression</h1>
+            <p className="text-[11px] font-display font-extrabold uppercase tracking-widest text-[#a34e36]">Espace Parent</p>
+            <h1 className="font-display text-xl font-extrabold text-deep-blue">Suivi & Contrôle</h1>
           </div>
         </div>
       </div>
 
-      <div className="px-5 mt-4 flex-1 space-y-4 overflow-y-auto">
+      <div className="px-5 mt-4 flex-1 space-y-5 overflow-y-auto pb-10">
+        
         {/* Child Selector Tabs */}
         <div className="bg-neutral-100 p-1.5 rounded-2xl flex gap-1">
           {profiles.map((p) => {
@@ -79,47 +86,182 @@ function ParentDashboard() {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-3 gap-2">
-          <Stat icon={<Clock className="size-4" />} label="Temps" value={`${activeProfile.timeSpentThisWeek} min`} color="bg-river/15 text-river" />
-          <Stat icon={<Flame className="size-4" />} label="Série" value={`${activeProfile.streak} j`} color="bg-terracotta/15 text-terracotta" />
-          <Stat icon={<TrendingUp className="size-4" />} label="Étoiles" value={`${activeProfile.stars}`} color="bg-ocre/25 text-ocre-foreground" />
+          <Stat icon={<i className="fa-solid fa-clock" />} label="Temps" value={`${activeProfile.timeSpentThisWeek} min`} color="bg-river/15 text-river" />
+          <Stat icon={<i className="fa-solid fa-fire" />} label="Série" value={`${activeProfile.streak} j`} color="bg-terracotta/15 text-terracotta" />
+          <Stat icon={<i className="fa-solid fa-star text-ocre" />} label="Sagesse" value={`${activeProfile.xp} XP`} color="bg-ocre/25 text-ocre-foreground" />
         </div>
 
-        {/* Weekly digest / Narrative Report */}
-        <div className="bg-gradient-to-br from-ocre/10 to-terracotta/5 rounded-3xl p-5 border border-ocre/20">
-          <h3 className="font-display font-extrabold text-xs text-terracotta uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-            <BookOpen className="size-3.5" /> Rapport de la semaine
+        {/* 📢 Live Parent Question Box ("Raconte à quelqu'un") */}
+        <div className="bg-gradient-to-br from-ocre/10 to-terracotta/5 rounded-3xl p-5 border border-ocre/25 space-y-3">
+          <h3 className="font-display font-extrabold text-xs text-[#a34e36] uppercase tracking-wider flex items-center gap-1.5">
+            <i className="fa-solid fa-bullhorn" /> Dernier récit à valider
           </h3>
-          <p className="text-xs font-semibold text-deep-blue leading-relaxed">
-            "{summaryText}"
-          </p>
+          
+          {activeProfile.lastRaconteFiche ? (
+            <div className="space-y-3 animate-fade-scale">
+              <div className="space-y-1">
+                <p className="font-display font-extrabold text-deep-blue text-xs">
+                  {activeProfile.lastRaconteFiche.title}
+                </p>
+                <p className="text-[11px] text-neutral-600 leading-relaxed">
+                  {activeProfile.lastRaconteFiche.content}
+                </p>
+              </div>
+              
+              <div className="bg-white border border-ocre/20 rounded-xl p-3 shadow-inner">
+                <p className="text-[10px] font-semibold text-ocre-foreground leading-relaxed flex items-start gap-1.5">
+                  <i className="fa-solid fa-lightbulb text-ocre shrink-0 mt-0.5" />
+                  <span>{activeProfile.lastRaconteFiche.question}</span>
+                </p>
+              </div>
+
+              <button
+                onClick={handleClearFiche}
+                className="w-full py-2 bg-leaf hover:bg-leaf-dark text-white font-display font-extrabold text-[10px] uppercase tracking-wider rounded-xl transition flex items-center justify-center gap-1.5 shadow"
+              >
+                <i className="fa-solid fa-check-double" />
+                L'enfant m'a raconté ! (Valider)
+              </button>
+            </div>
+          ) : (
+            <p className="text-[11px] text-neutral-500 italic leading-relaxed">
+              Aucun chapitre validé récemment. Dès que votre enfant terminera une leçon et viendra vous raconter, sa fiche de questions apparaîtra ici.
+            </p>
+          )}
         </div>
 
-        {/* Subjects Progression */}
+        {/* ⚙️ Difficulty Adjustments */}
+        <div className="bg-white ring-1 ring-black/5 rounded-3xl p-5 shadow-sm space-y-4">
+          <h3 className="text-[11px] font-display font-extrabold uppercase tracking-widest text-muted-foreground">
+            Ajustement des niveaux (Griot)
+          </h3>
+          
+          <div className="space-y-4">
+            {/* Alphabet */}
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="font-display font-extrabold text-xs text-deep-blue">1. Alphabet & Sons</p>
+                <p className="text-[9px] text-neutral-500">Mots du marché & phonétique</p>
+              </div>
+              <div className="flex bg-neutral-100 p-1 rounded-xl gap-0.5 shrink-0">
+                {[1, 2, 3].map((lvl) => (
+                  <button
+                    key={lvl}
+                    onClick={() => handleLevelChange("alphabet", lvl as 1 | 2 | 3)}
+                    className={`size-7 rounded-lg text-xs font-display font-extrabold transition-all ${
+                      activeProfile.levelAlphabet === lvl
+                        ? "bg-ocre text-white shadow-xs"
+                        : "text-neutral-500 hover:text-deep-blue"
+                    }`}
+                  >
+                    {lvl}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Marché */}
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="font-display font-extrabold text-xs text-deep-blue">2. Le Marché (Maths)</p>
+                <p className="text-[9px] text-neutral-500">Calculs & Monnaie FCFA</p>
+              </div>
+              <div className="flex bg-neutral-100 p-1 rounded-xl gap-0.5 shrink-0">
+                {[1, 2, 3].map((lvl) => (
+                  <button
+                    key={lvl}
+                    onClick={() => handleLevelChange("marche", lvl as 1 | 2 | 3)}
+                    className={`size-7 rounded-lg text-xs font-display font-extrabold transition-all ${
+                      activeProfile.levelMarche === lvl
+                        ? "bg-[#a34e36] text-white shadow-xs"
+                        : "text-neutral-500 hover:text-deep-blue"
+                    }`}
+                  >
+                    {lvl}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Sciences */}
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <p className="font-display font-extrabold text-xs text-deep-blue">3. Sciences locales</p>
+                <p className="text-[9px] text-neutral-500">Nature & Cycle de l'eau</p>
+              </div>
+              <div className="flex bg-neutral-100 p-1 rounded-xl gap-0.5 shrink-0">
+                {[1, 2, 3].map((lvl) => (
+                  <button
+                    key={lvl}
+                    onClick={() => handleLevelChange("science", lvl as 1 | 2 | 3)}
+                    className={`size-7 rounded-lg text-xs font-display font-extrabold transition-all ${
+                      activeProfile.levelScience === lvl
+                        ? "bg-[#489e28] text-white shadow-xs"
+                        : "text-neutral-500 hover:text-deep-blue"
+                    }`}
+                  >
+                    {lvl}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ⏱️ Screen Time Regulation */}
         <div className="bg-white ring-1 ring-black/5 rounded-3xl p-5 shadow-sm space-y-3">
-          <p className="text-[11px] font-display font-extrabold uppercase tracking-widest text-muted-foreground mb-1">
-            Progression par matière
-          </p>
+          <div className="flex items-center justify-between">
+            <h3 className="text-[11px] font-display font-extrabold uppercase tracking-widest text-muted-foreground">
+              Limiteur de Temps d'Écran
+            </h3>
+            {activeProfile.timeSpentThisWeek >= activeProfile.timeLimit && (
+              <span className="text-[9px] font-display font-extrabold bg-terracotta/20 text-terracotta px-2 py-0.5 rounded-full animate-pulse uppercase">
+                Verrouillé
+              </span>
+            )}
+          </div>
+          
           <div className="space-y-3">
-            {activeProfile.districts.map((d) => (
-              <Row key={d.id} label={d.name} value={d.progress} subject={d.subject} color={
-                d.color === "ocre" ? "bg-ocre" :
-                d.color === "river" ? "bg-river" :
-                d.color === "leaf" ? "bg-leaf" : "bg-terracotta"
-              } />
-            ))}
+            <div className="flex justify-between items-end">
+              <div>
+                <p className="font-display font-extrabold text-xs text-deep-blue">Temps alloué quotidien</p>
+                <p className="text-[9px] text-neutral-500">
+                  Consommé : {activeProfile.timeSpentThisWeek} min / {activeProfile.timeLimit} min
+                </p>
+              </div>
+              <span className="font-display font-extrabold text-sm text-[#a34e36]">{activeProfile.timeLimit} min</span>
+            </div>
+
+            {/* Selector Buttons */}
+            <div className="flex gap-2">
+              {[0, 15, 30, 45, 60].map((limit) => (
+                <button
+                  key={limit}
+                  onClick={() => handleTimeLimitChange(limit)}
+                  className={`flex-1 py-2 text-center text-xs font-display font-extrabold rounded-xl transition ${
+                    activeProfile.timeLimit === limit
+                      ? "bg-deep-blue text-white shadow-sm"
+                      : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
+                  }`}
+                >
+                  {limit === 0 ? "0 min" : `${limit}m`}
+                </button>
+              ))}
+            </div>
+            {/* Removed debug info */}
           </div>
         </div>
 
         {/* Weekly Chart */}
         <div className="bg-white ring-1 ring-black/5 rounded-3xl p-5 shadow-sm">
           <p className="text-[11px] font-display font-extrabold uppercase tracking-widest text-muted-foreground mb-3">
-            Régularité (7 jours)
+            Régularité d'apprentissage (minutes)
           </p>
-          <div className="flex items-end justify-between gap-2 h-24">
-            {[30, 60, 40, 80, 20, 90, 55].map((h, i) => (
+          <div className="flex items-end justify-between gap-2 h-20">
+            {[10, 15, 8, 25, 20, 30, 12].map((h, i) => (
               <div key={i} className="flex-1 flex flex-col items-center gap-1">
-                <div className="w-full bg-leaf/20 rounded-t-lg relative overflow-hidden" style={{ height: `${h}%` }}>
-                  <div className="absolute inset-0 bg-gradient-to-t from-leaf to-leaf/60" />
+                <div className="w-full bg-leaf/25 rounded-t-lg relative overflow-hidden" style={{ height: `${(h / 30) * 100}%` }}>
+                  <div className="absolute inset-0 bg-[#a34e36]/70" />
                 </div>
                 <span className="text-[9px] font-display font-extrabold text-muted-foreground">{"LMMJVSD"[i]}</span>
               </div>
@@ -127,44 +269,6 @@ function ParentDashboard() {
           </div>
         </div>
 
-        {/* Parental Advice / Tips */}
-        <div className="bg-deep-blue/5 rounded-3xl p-5 border border-deep-blue/10 space-y-3">
-          <h3 className="font-display font-extrabold text-xs text-deep-blue uppercase tracking-wider flex items-center gap-1.5">
-            <Lightbulb className="size-4 text-[#ffc800]" fill="#ffc800" /> Conseils d'accompagnement
-          </h3>
-          <ul className="space-y-2">
-            {tips.map((t, idx) => (
-              <li key={idx} className="text-xs font-semibold text-deep-blue/80 flex gap-2">
-                <span className="text-terracotta font-extrabold">{idx + 1}.</span>
-                <span>{t}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Bottom Nav Buttons */}
-        <div className="grid grid-cols-2 gap-3 pb-8">
-          <Link
-            to="/parents/enfants"
-            className="bg-deep-blue text-white rounded-2xl p-4 flex items-center gap-3 shadow-lg active:scale-[0.98] transition"
-          >
-            <Users className="size-5" />
-            <div>
-              <p className="font-display font-extrabold text-sm">Enfants</p>
-              <p className="text-[10px] opacity-70">Gérer les profils</p>
-            </div>
-          </Link>
-          <Link
-            to="/parents/parametres"
-            className="bg-white ring-1 ring-black/5 rounded-2xl p-4 flex items-center gap-3 shadow-sm active:scale-[0.98] transition"
-          >
-            <Settings className="size-5 text-terracotta" />
-            <div>
-              <p className="font-display font-extrabold text-sm text-deep-blue">Réglages</p>
-              <p className="text-[10px] text-muted-foreground">Difficulté, temps</p>
-            </div>
-          </Link>
-        </div>
       </div>
     </PhoneFrame>
   );
@@ -175,24 +279,7 @@ function Stat({ icon, label, value, color }: { icon: React.ReactNode; label: str
     <div className="bg-white ring-1 ring-black/5 rounded-2xl p-3 shadow-sm">
       <div className={`size-8 rounded-xl grid place-items-center ${color}`}>{icon}</div>
       <p className="text-[10px] font-display font-extrabold uppercase text-muted-foreground mt-2">{label}</p>
-      <p className="font-display font-extrabold text-deep-blue text-base leading-none mt-0.5">{value}</p>
-    </div>
-  );
-}
-
-function Row({ label, value, subject, color }: { label: string; value: number; subject: string; color: string }) {
-  return (
-    <div>
-      <div className="flex justify-between items-end mb-1">
-        <div>
-          <span className="font-display font-extrabold text-xs text-deep-blue block">{label}</span>
-          <span className="text-[10px] text-muted-foreground block -mt-0.5">{subject}</span>
-        </div>
-        <span className="font-mono text-[11px] text-muted-foreground font-bold tabular-nums">{value}%</span>
-      </div>
-      <div className="h-2 bg-neutral-100 rounded-full overflow-hidden">
-        <div className={`h-full ${color} rounded-full transition-all duration-500`} style={{ width: `${value}%` }} />
-      </div>
+      <p className="font-display font-extrabold text-deep-blue text-sm leading-none mt-0.5">{value}</p>
     </div>
   );
 }

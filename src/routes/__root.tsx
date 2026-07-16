@@ -14,7 +14,6 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { KpodjiProvider } from "@/lib/kpodji-store";
 
 // Duolingo Sidebar Navigation Icons
-import { Home, BookA, BookOpen, Trophy, User, Award } from "lucide-react";
 
 function NotFoundComponent() {
   return (
@@ -96,6 +95,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap",
       },
+      {
+        rel: "stylesheet",
+        href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css",
+        crossOrigin: "anonymous",
+      },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
@@ -120,12 +124,12 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 const SIDEBAR_ITEMS = [
-  { to: "/", label: "APPRENDRE", Icon: Home },
-  { to: "/alphabet", label: "ALPHABET", Icon: BookA },
-  { to: "/histoires", label: "HISTOIRES", Icon: BookOpen },
-  { to: "/badges", label: "BADGES", Icon: Trophy },
-  { to: "/avatar", label: "PROFIL", Icon: User },
-  { to: "/parents", label: "PARENTS", Icon: Award },
+  { to: "/", label: "APPRENDRE", iconClass: "fa-solid fa-house" },
+  { to: "/alphabet", label: "ALPHABET", iconClass: "fa-solid fa-font" },
+  { to: "/histoires", label: "HISTOIRES", iconClass: "fa-solid fa-book-open" },
+  { to: "/badges", label: "TOTEMS", iconClass: "fa-solid fa-award" },
+  { to: "/avatar", label: "APPRENTI", iconClass: "fa-solid fa-user" },
+  { to: "/parents", label: "PARENTS", iconClass: "fa-solid fa-user-shield" },
 ];
 
 function RootComponent() {
@@ -142,9 +146,9 @@ function RootComponent() {
             {/* Logo */}
             <div className="flex items-center gap-2.5 px-2">
               <div className="size-9 rounded-xl bg-gradient-to-tr from-ocre to-terracotta flex items-center justify-center font-display font-extrabold text-white text-lg shadow-sm">
-                Kp
+                Pg
               </div>
-              <span className="font-display font-extrabold text-2xl tracking-wide text-deep-blue">kpodji</span>
+              <span className="font-display font-extrabold text-xl tracking-wide text-deep-blue">petit génie</span>
             </div>
 
             {/* Menu Items */}
@@ -153,12 +157,12 @@ function RootComponent() {
                 <Link
                   key={item.to}
                   to={item.to}
-                  className="flex items-center gap-4 px-4 py-3.5 rounded-2xl font-display font-extrabold text-sm tracking-wider transition-all duration-200 border-2 border-transparent hover:bg-neutral-100 hover:scale-[1.02]"
+                  className="flex items-center gap-4 px-4 py-3.5 rounded-2xl font-display font-extrabold text-xs tracking-wider transition-all duration-200 border-2 border-transparent hover:bg-neutral-100 hover:scale-[1.02]"
                   activeProps={{
                     className: "bg-[#ddf4ff] text-[#1899d6] border-[#84d8ff]"
                   }}
                 >
-                  <item.Icon className="size-5 shrink-0" strokeWidth={2.5} />
+                  <i className={`${item.iconClass} text-lg w-5 shrink-0 text-center`} />
                   {item.label}
                 </Link>
               ))}
@@ -166,7 +170,7 @@ function RootComponent() {
 
             {/* Bottom Credits */}
             <div className="text-[10px] text-muted-foreground font-bold px-2">
-              © {new Date().getFullYear()} Kpodji Inc.
+              © {new Date().getFullYear()} Petit Génie Inc.
             </div>
           </aside>
 

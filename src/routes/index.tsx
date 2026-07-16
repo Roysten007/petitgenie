@@ -2,8 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { TopBar } from "@/components/kpodji/TopBar";
 import { BottomNav } from "@/components/kpodji/BottomNav";
 import { useKpodji } from "@/lib/kpodji-store";
-import { Check, Lock, Trophy, Zap, Flame, Heart } from "lucide-react";
 import { Mascot } from "@/components/kpodji/Mascot";
+import { PhoneFrame } from "@/components/kpodji/PhoneFrame";
 import { useState, useEffect, useRef } from "react";
 
 export const Route = createFileRoute("/")({
@@ -13,52 +13,27 @@ export const Route = createFileRoute("/")({
 /* ─── Level Nodes ─── */
 interface LevelNode {
   id: string;
-  type: "exercise" | "alphabet" | "comptines" | "chest";
-  districtId?: "marche" | "ecole" | "riviere" | "place" | "science" | "morale";
+  type: "alphabet" | "exercise" | "comptines";
+  districtId?: "marche" | "science";
   label: string;
   emoji: string;
   color: string; // gradient start color
+  descFr: string;
+  descEn: string;
 }
 
-const getPathNodes = (bracket: "4-6" | "7-8" | "9-10"): LevelNode[] => {
-  if (bracket === "4-6") {
-    return [
-      { id: "n1", type: "alphabet",  label: "Lettres",      emoji: "🔤", color: "#E06500" },
-      { id: "n2", type: "exercise",  districtId: "marche",  label: "Les Fruits",   emoji: "🥭", color: "#E06500" },
-      { id: "n3", type: "exercise",  districtId: "morale",  label: "Dire Bonjour", emoji: "🤝", color: "#ce82ff" },
-      { id: "n4", type: "chest",     label: "Cadeau",       emoji: "🎁", color: "#1cb0f6" },
-      { id: "n5", type: "comptines", label: "Chansons",     emoji: "🎵", color: "#ff9600" },
-      { id: "n6", type: "exercise",  districtId: "science", label: "Les Animaux",  emoji: "🦁", color: "#E06500" },
-      { id: "n7", type: "exercise",  districtId: "riviere", label: "Les Formes",   emoji: "🔵", color: "#ce82ff" },
-    ];
-  } else if (bracket === "9-10") {
-    return [
-      { id: "n1", type: "alphabet",  label: "Vocabulaire",  emoji: "📝", color: "#E06500" },
-      { id: "n2", type: "exercise",  districtId: "marche",  label: "Calcul Monnaie", emoji: "💰", color: "#E06500" },
-      { id: "n3", type: "exercise",  districtId: "ecole",   label: "Verbes Anglais", emoji: "🏫", color: "#ce82ff" },
-      { id: "n4", type: "chest",     label: "Super Coffre", emoji: "🎁", color: "#1cb0f6" },
-      { id: "n5", type: "comptines", label: "Contes",       emoji: "📖", color: "#ff9600" },
-      { id: "n6", type: "exercise",  districtId: "science", label: "Eau & Énergie", emoji: "💡", color: "#E06500" },
-      { id: "n7", type: "exercise",  districtId: "morale",  label: "Citoyenneté",  emoji: "🤝", color: "#ce82ff" },
-    ];
-  } else {
-    return [
-      { id: "n1", type: "alphabet",  label: "Alphabet",    emoji: "🔤", color: "#E06500" },
-      { id: "n2", type: "exercise",  districtId: "marche",  label: "Le Marché",   emoji: "🥭", color: "#E06500" },
-      { id: "n3", type: "exercise",  districtId: "ecole",   label: "L'École",     emoji: "🏫", color: "#ce82ff" },
-      { id: "n4", type: "chest",     label: "Coffre",       emoji: "🎁", color: "#1cb0f6" },
-      { id: "n5", type: "comptines", label: "Comptines",    emoji: "🎵", color: "#ff9600" },
-      { id: "n6", type: "exercise",  districtId: "science", label: "Sciences",    emoji: "⚡", color: "#E06500" },
-      { id: "n7", type: "exercise",  districtId: "place",   label: "La Place",    emoji: "🌳", color: "#ce82ff" },
-    ];
-  }
-};
+const pathNodes: LevelNode[] = [
+  { id: "alphabet", type: "alphabet", label: "Alphabet & Sons", emoji: "🔤", color: "#E06500", descFr: "Les lettres du marché de Kpodji", descEn: "Kpodji market letters and sounds" },
+  { id: "marche", type: "exercise", districtId: "marche", label: "Le Marché", emoji: "🥭", color: "#a34e36", descFr: "Calculs en FCFA et troc de fruits", descEn: "FCFA math and fruit trading" },
+  { id: "science", type: "exercise", districtId: "science", label: "Sciences", emoji: "⚡", color: "#489e28", descFr: "L'eau, les plantes et les animaux", descEn: "Water, plants and wild animals" },
+  { id: "english", type: "comptines", label: "English Corner", emoji: "🇬🇧", color: "#1cb0f6", descFr: "Chansons et dialogues de voyage", descEn: "Travel songs and small talks" },
+];
 
 /* ─── Zig-zag offsets (Duolingo snake) ─── */
-const ZIG_ZAG = [0, 50, 70, 50, 0, -50, -70, -50]; // repeating pattern
+const ZIG_ZAG = [0, 55, -55, 0]; // repeating pattern
 
 function Village() {
-  const { childName, districts, avatar, seeds, streak, stars, activeProfile, lang } = useKpodji();
+  const { childName, avatar, seeds, streak, activeProfile, lang, completedChapters, xp } = useKpodji();
   const faces = ["🙂", "😃", "😊", "🤗", "😎", "🤩", "🦁", "🐰", "🦊", "🐼"];
   const currentFace = faces[avatar.face] || "🙂";
  
@@ -70,42 +45,44 @@ function Village() {
   const nodeRefs = useRef<(HTMLElement | null)[]>([]);
   const prevIdxRef = useRef<number | null>(null);
 
-  const bracket = activeProfile?.levelBracket || "7-8";
-  const pathNodes = getPathNodes(bracket);
-
   const isNodeUnlocked = (index: number) => {
-    if (index === 0) return true;
-    const prev = pathNodes[index - 1];
-    if (prev.type === "exercise" && prev.districtId) {
-      const d = districts.find(x => x.id === prev.districtId);
-      return d ? d.progress >= 100 : true;
-    }
+    // Tous les niveaux sont déverrouillés pour l'évaluation directe du jury
     return true;
   };
 
   const getProgress = (node: LevelNode) => {
-    if (node.type === "exercise" && node.districtId) {
-      const d = districts.find(x => x.id === node.districtId);
-      return d ? d.progress : 0;
-    }
+    if (completedChapters.includes(node.id)) return 100;
+    // Special check for active
     return 0;
   };
 
-  const activeIdx = pathNodes.findIndex((n, i) => isNodeUnlocked(i) && getProgress(n) < 100);
+  // Find active node index
+  const activeIdx = pathNodes.findIndex((n, i) => !completedChapters.includes(n.id));
   const currentIdx = activeIdx === -1 ? pathNodes.length - 1 : activeIdx;
 
   const currentNode = pathNodes[currentIdx];
-  let activeTo = "/";
-  let activeParams: Record<string, string> = {};
-  if (currentNode) {
-    if (currentNode.type === "alphabet") activeTo = "/alphabet";
-    else if (currentNode.type === "comptines") activeTo = "/comptines";
-    else if (currentNode.type === "chest") activeTo = "/badges";
-    else if (currentNode.type === "exercise" && currentNode.districtId) {
-      activeTo = "/exercise/$district";
-      activeParams = { district: currentNode.districtId };
+
+  // Petit Génie's contextual guidance
+  const griotSpeech = () => {
+    if (completedChapters.length === 0) {
+      return lang === "fr"
+        ? "« Bienvenue, jeune Apprenti Griot ! Je suis Petit Génie. Tapotons ensemble sur la première étape pour découvrir les secrets des lettres et des sons du marché ! »"
+        : "“Welcome, young Griot Apprentice! I am Petit Génie. Let's tap together on the first step to discover the secrets of market letters and sounds!”";
     }
-  }
+    if (completedChapters.includes("alphabet") && !completedChapters.includes("marche")) {
+      return lang === "fr"
+        ? "« Merveilleux ! Tu as appris les premières lettres. Maintenant, viens au marché de Kpodji pour aider Fatou à faire ses comptes et faire du troc ! »"
+        : "“Wonderful! You learned the first letters. Now, join Kpodji market to help Fatou calculate prices and trade fruits!”";
+    }
+    if (completedChapters.includes("marche") && !completedChapters.includes("science")) {
+      return lang === "fr"
+        ? "« Tu te débrouilles comme un chef ! Dirigeons-nous vers les champs pour observer la nature sauvage et percer les mystères des plantes ! »"
+        : "“You are doing great! Let's head towards the fields to observe wild nature and uncover the secrets of plants!”";
+    }
+    return lang === "fr"
+      ? "« Formidable voyageur ! Récitons et chantons nos histoires en anglais à l'English Corner sous le grand baobab ! »"
+      : "“Amazing traveler! Let's recite and sing our stories in English at the English Corner under the great baobab tree!”";
+  };
 
   const updateMascotPosition = (idx: number) => {
     const node = nodeRefs.current[idx];
@@ -178,14 +155,55 @@ function Village() {
     prevIdxRef.current = currentIdx;
   }, [currentIdx]);
 
-  /* League data */
+  /* League rankings styled for Petit Génie */
   const league = [
-    { name: "Fatou", face: "🦁", xp: 120 },
-    { name: "Moussa", face: "🦊", xp: 95 },
-    { name: childName, face: currentFace, xp: seeds, isMe: true },
-    { name: "Kofi", face: "🐼", xp: 40 },
-    { name: "Awa", face: "🐰", xp: 35 },
+    { name: "Fatou", face: "🦁", xp: 320 },
+    { name: "Moussa", face: "🦊", xp: 210 },
+    { name: childName, face: currentFace, xp: xp, isMe: true },
+    { name: "Kofi", face: "🐼", xp: 140 },
+    { name: "Awa", face: "🐰", xp: 95 },
   ].sort((a, b) => b.xp - a.xp);
+
+  // Parent screen time lock visual override
+  if (activeProfile.timeSpentThisWeek >= activeProfile.timeLimit) {
+    return (
+      <PhoneFrame dark>
+        <div className="flex-1 flex flex-col items-center justify-center px-8 text-center gap-6 animate-fade-scale">
+          <div className="size-24 rounded-full bg-deep-blue border-4 border-ocre/50 grid place-items-center relative animate-pulse shadow-2xl">
+            <i className="fa-solid fa-moon text-ocre text-4xl" />
+          </div>
+          <h1 className="font-display text-2xl font-extrabold text-white">L'heure de se reposer !</h1>
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-5 text-left text-xs text-white/80 leading-relaxed max-w-xs shadow-inner">
+            <p className="font-display font-extrabold text-ocre uppercase tracking-wider mb-1 flex items-center gap-1.5">
+              <i className="fa-solid fa-bed" /> Petit Génie dort...
+            </p>
+            Tu as bien travaillé aujourd'hui ! Petit Génie s'est endormi sous le grand Baobab. Il est temps de reposer tes yeux et de revenir demain pour écouter de nouveaux contes.
+          </div>
+          
+
+          <p className="text-[10px] text-white/40">Limite de temps atteinte ({activeProfile.timeLimit} min / {activeProfile.timeSpentThisWeek} min cumulées)</p>
+          
+          <Link to="/parents" className="text-xs font-display font-extrabold text-ocre hover:underline mt-2 flex items-center gap-1">
+            <i className="fa-solid fa-lock-open text-[10px]" /> Espace Adulte (Paramètres)
+          </Link>
+        </div>
+      </PhoneFrame>
+    );
+  }
+
+  // Active path navigation
+  let activeToLink = "/";
+  let activeToParams: Record<string, string> = {};
+  if (currentNode) {
+    if (currentNode.type === "alphabet") {
+      activeToLink = "/alphabet";
+    } else if (currentNode.type === "comptines") {
+      activeToLink = "/comptines";
+    } else if (currentNode.type === "exercise" && currentNode.districtId) {
+      activeToLink = "/exercise/$district";
+      activeToParams = { district: currentNode.districtId };
+    }
+  }
 
   return (
     <div className="flex-1 flex w-full min-h-screen bg-white">
@@ -203,16 +221,12 @@ function Village() {
         {/* Desktop stats bar */}
         <div className="hidden md:flex items-center justify-end gap-4 px-6 py-3 border-b border-[#e5e5e5]">
           <div className="flex items-center gap-1.5">
-            <Flame className="size-5 text-[#ff9600]" />
+            <i className="fa-solid fa-fire text-lg text-[#ff9600]" />
             <span className="font-display font-extrabold text-sm text-[#3c3c3c]">{streak}</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Zap className="size-5 text-[#ffc800]" fill="#ffc800" />
-            <span className="font-display font-extrabold text-sm text-[#3c3c3c]">{seeds}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Heart className="size-5 text-[#ff4b4b]" fill="#ff4b4b" />
-            <span className="font-display font-extrabold text-sm text-[#3c3c3c]">5</span>
+            <i className="fa-solid fa-star text-lg text-ocre" />
+            <span className="font-display font-extrabold text-sm text-[#3c3c3c]">{xp} XP</span>
           </div>
         </div>
 
@@ -220,33 +234,28 @@ function Village() {
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-md mx-auto px-6 pt-6 pb-28">
 
-            {/* Zao the Griot Opening Speech Bubble */}
+            {/* Petit Génie speech bubble */}
             <div className="mb-6 flex items-end gap-3 bg-ocre/10 rounded-3xl p-4 border border-ocre/20 shadow-xs relative animate-pop-in">
-              <Mascot size={76} variant="idle" animate="breathe" className="shrink-0" />
+              <div className="relative shrink-0">
+                <Mascot size={76} variant="idle" animate="breathe" className="shrink-0" />
+                <div className="absolute inset-[-4px] rounded-full border border-ocre/30 animate-pulse pointer-events-none" />
+              </div>
               <div className="flex-1">
-                <span className="text-[9px] font-display font-extrabold text-terracotta uppercase tracking-wider">🎙️ Zao le Griot raconte...</span>
+                <span className="text-[9px] font-display font-extrabold text-terracotta uppercase tracking-wider">🎙️ Petit Génie raconte...</span>
                 <p className="font-display font-bold text-deep-blue text-xs leading-relaxed mt-0.5">
-                  {lang === "fr" 
-                    ? "« Salut, petit conteur ! Aujourd'hui, nous marchons sur le chemin sablonneux de Kpodji. Viens avec moi pour apprendre les lettres du marché ! »" 
-                    : "“Hello, little storyteller! Today we walk the sandy paths of Kpodji. Come with me to learn the letters of the market!”"}
+                  {griotSpeech()}
                 </p>
               </div>
             </div>
 
             {/* Unit banner */}
-            <div className="bg-[#E06500] rounded-2xl p-4 text-white mb-10 relative overflow-hidden">
+            <div className="bg-[#a34e36] rounded-2xl p-4 text-white mb-10 relative overflow-hidden shadow-md">
               <div className="absolute inset-0 kente-pattern opacity-15" />
               <div className="relative z-10 flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] font-display font-extrabold uppercase tracking-widest text-white/70">📖 Le Voyage de Zao · Chapitre 1</span>
-                  <h2 className="font-display text-lg font-extrabold leading-tight mt-0.5">Zao et les lettres du marché</h2>
+                  <span className="text-[10px] font-display font-extrabold uppercase tracking-widest text-white/70">🌳 Le Sentier de la Sagesse</span>
+                  <h2 className="font-display text-lg font-extrabold leading-tight mt-0.5">Le parcours de Petit Génie</h2>
                 </div>
-                <Link
-                  to="/defi"
-                  className="bg-white/20 border border-white/30 rounded-xl px-3 py-1.5 text-xs font-display font-extrabold uppercase tracking-wider hover:bg-white/30 transition"
-                >
-                  📖 Guide
-                </Link>
               </div>
             </div>
 
@@ -279,11 +288,11 @@ function Village() {
                   {/* Commencer speech bubble next to mascot */}
                   {mascotVariant === "idle" && (
                     <Link
-                      to={activeTo}
-                      params={activeParams}
+                      to={activeToLink}
+                      params={activeToParams}
                       className="absolute pointer-events-auto -top-8 left-14 bg-white border-2 border-[#e5e5e5] rounded-2xl px-3.5 py-1.5 text-[11px] font-display font-extrabold uppercase tracking-wider text-[#E06500] shadow-md hover:shadow-lg transition-all z-40 whitespace-nowrap animate-bounce flex items-center gap-1.5"
                     >
-                      C'est parti ! 🚀
+                      Commencer ! 🚀
                       <div className="absolute bottom-[-6px] left-3 size-2.5 bg-white border-r-2 border-b-2 border-[#e5e5e5] rotate-45" />
                     </Link>
                   )}
@@ -323,7 +332,6 @@ function Village() {
                 let params: Record<string, string> = {};
                 if (node.type === "alphabet") to = "/alphabet";
                 else if (node.type === "comptines") to = "/comptines";
-                else if (node.type === "chest") to = "/badges";
                 else if (node.type === "exercise" && node.districtId) {
                   to = "/exercise/$district";
                   params = { district: node.districtId };
@@ -362,7 +370,7 @@ function Village() {
 
                         {/* Icon inside */}
                         {completed ? (
-                          <Check className="size-8 text-[#afafaf]" strokeWidth={3} />
+                          <i className="fa-solid fa-check text-2xl text-[#afafaf]" />
                         ) : (
                           <span className="text-3xl drop-shadow">{node.emoji}</span>
                         )}
@@ -379,7 +387,7 @@ function Village() {
                         ref={(el) => { nodeRefs.current[index] = el; }}
                         className="size-[72px] rounded-full bg-[#e5e5e5] flex items-center justify-center" style={{ boxShadow: "0 8px 0 #d5d5d5" }}
                       >
-                        <Lock className="size-7 text-[#afafaf]" />
+                        <i className="fa-solid fa-lock text-xl text-[#afafaf]" />
                       </div>
                     )}
 
@@ -387,8 +395,9 @@ function Village() {
                     <p className={`mt-2 font-display font-extrabold text-xs text-center ${unlocked ? "text-[#3c3c3c]" : "text-[#afafaf]"}`}>
                       {node.label}
                     </p>
-
-                    {/* Mascot next to the chest node removed */}
+                    <p className="text-[9px] text-muted-foreground text-center max-w-[18ch] -mt-0.5 leading-tight">
+                      {lang === "fr" ? node.descFr : node.descEn}
+                    </p>
                   </div>
                 );
               })}
@@ -411,7 +420,7 @@ function Village() {
         <div className="bg-white border-2 border-[#e5e5e5] rounded-2xl p-4">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-display font-extrabold text-base text-[#3c3c3c] flex items-center gap-2">
-              <Trophy className="size-5 text-[#ffc800]" /> Ligue des Conteurs
+              <i className="fa-solid fa-trophy text-[#ffc800] text-lg" /> Ligue des Conteurs
             </h3>
           </div>
           <div className="space-y-1.5">
@@ -431,39 +440,9 @@ function Village() {
                     {p.name} {(p as any).isMe && <span className="text-[#1cb0f6] text-[10px]">(toi)</span>}
                   </span>
                 </div>
-                <span className="font-mono text-sm font-bold text-[#afafaf] tabular-nums">{p.xp} Graines</span>
+                <span className="font-mono text-sm font-bold text-[#afafaf] tabular-nums">{p.xp} XP</span>
               </div>
             ))}
-          </div>
-          <Link to="/badges" className="block mt-3 text-center text-xs font-display font-extrabold text-[#1cb0f6] uppercase tracking-wider hover:underline">
-            Voir le classement des conteurs →
-          </Link>
-        </div>
-
-        {/* Daily Quest Widget */}
-        <div className="bg-white border-2 border-[#e5e5e5] rounded-2xl p-4">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-display font-extrabold text-base text-[#3c3c3c] flex items-center gap-2">
-              Missions du Griot
-            </h3>
-            <span className="text-xs font-display font-extrabold text-[#1cb0f6] uppercase tracking-wider cursor-pointer hover:underline">
-              Afficher tout
-            </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <Zap className="size-10 text-[#ffc800] shrink-0" fill="#ffc800" />
-            <div className="flex-1">
-              <p className="font-display font-extrabold text-sm text-[#3c3c3c]">Gagne 10 Graines</p>
-              <div className="mt-1.5 h-3 bg-[#e5e5e5] rounded-full overflow-hidden relative">
-                <div
-                  className="h-full bg-[#ffc800] rounded-full transition-all duration-700"
-                  style={{ width: `${Math.min((seeds / 10) * 100, 100)}%` }}
-                />
-                <span className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-[#3c3c3c]/70">
-                  {Math.min(seeds, 10)} / 10
-                </span>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -473,29 +452,29 @@ function Village() {
             <Mascot size={55} variant="default" animate="float" />
           </div>
           <div>
-            <p className="text-[10px] font-display font-extrabold text-[#E06500] uppercase tracking-wider">Feu de camp allumé</p>
+            <p className="text-[10px] font-display font-extrabold text-[#E06500] uppercase tracking-wider">Le Baobab aux Paroles</p>
             <p className="text-xs font-bold text-[#3c3c3c] leading-snug">
-              "Garde le feu de camp allumé en venant écouter mes histoires chaque jour !" 🪵🔥
+              "Chaque pas sur le sentier libère un totem de sagesse. Continuons d'avancer ensemble ! 🪵🔥"
             </p>
           </div>
         </div>
 
-        {/* Create Profile CTA */}
+        {/* Create Profile / Parent Portal CTA */}
         <div className="bg-white border-2 border-[#e5e5e5] rounded-2xl p-4 space-y-3">
           <h3 className="font-display font-extrabold text-base text-[#3c3c3c]">
-            Crée un profil pour sauvegarder ta progression !
+            Gestion des profils & Suivi
           </h3>
           <Link
             to="/avatar"
             className="block w-full py-3 rounded-2xl text-center font-display font-extrabold text-sm uppercase tracking-wider text-white transition-all active:scale-[0.98]"
             style={{ background: "#E06500", boxShadow: "0 4px 0 #a84b00" }}
           >
-            Créer un profil
+            Personnaliser mon Griot
           </Link>
           <Link
             to="/parents"
             className="block w-full py-3 rounded-2xl text-center font-display font-extrabold text-sm uppercase tracking-wider transition-all active:scale-[0.98]"
-            style={{ background: "#1cb0f6", boxShadow: "0 4px 0 #1899d6", color: "white" }}
+            style={{ background: "#a34e36", boxShadow: "0 4px 0 #803b29", color: "white" }}
           >
             Espace Parents
           </Link>

@@ -5,7 +5,6 @@ import { BottomNav } from "@/components/kpodji/BottomNav";
 import { Mascot } from "@/components/kpodji/Mascot";
 import { useKpodji } from "@/lib/kpodji-store";
 import { useState } from "react";
-import { ArrowLeft, Sparkles, Check, Smile, Shirt, Crown } from "lucide-react";
 
 export const Route = createFileRoute("/avatar")({
   component: AvatarPage,
@@ -45,10 +44,10 @@ function AvatarPage() {
           to="/"
           className="size-9 glass rounded-full shadow-sm grid place-items-center transition-transform active:scale-90 shrink-0"
         >
-          <ArrowLeft className="size-4 text-deep-blue" />
+          <i className="fa-solid fa-arrow-left text-deep-blue text-sm" />
         </Link>
         <div>
-          <p className="text-[10px] font-display font-extrabold uppercase tracking-widest text-ocre">Le compagnon de Zao</p>
+          <p className="text-[10px] font-display font-extrabold uppercase tracking-widest text-ocre">Le compagnon de Petit Génie</p>
           <h1 className="font-display text-xl font-extrabold text-deep-blue leading-tight">Mon Apprenti Griot</h1>
         </div>
       </div>
@@ -104,7 +103,7 @@ function AvatarPage() {
           </div>
 
           <div className="absolute bottom-2 right-2.5">
-            <Sparkles className="size-5 text-ocre animate-bounce" />
+            <i className="fa-solid fa-wand-magic-sparkles text-ocre animate-bounce" />
           </div>
         </div>
 
@@ -116,7 +115,7 @@ function AvatarPage() {
               activeTab === "face" ? "bg-white text-deep-blue shadow-sm" : "text-muted-foreground"
             }`}
           >
-            <Smile className="size-3.5" />
+            <i className="fa-solid fa-face-smile text-xs" />
             Visages
           </button>
           <button
@@ -125,7 +124,7 @@ function AvatarPage() {
               activeTab === "outfit" ? "bg-white text-deep-blue shadow-sm" : "text-muted-foreground"
             }`}
           >
-            <Shirt className="size-3.5" />
+            <i className="fa-solid fa-shirt text-xs" />
             Wax
           </button>
           <button
@@ -134,7 +133,7 @@ function AvatarPage() {
               activeTab === "accessory" ? "bg-white text-deep-blue shadow-sm" : "text-muted-foreground"
             }`}
           >
-            <Crown className="size-3.5" />
+            <i className="fa-solid fa-crown text-xs" />
             Style
           </button>
         </div>
@@ -178,7 +177,7 @@ function AvatarPage() {
                 >
                   {local.outfit === i && (
                     <div className="absolute top-1.5 right-1.5 size-5 rounded-full bg-white flex items-center justify-center shadow">
-                      <Check className="size-3 text-deep-blue" strokeWidth={3} />
+                      <i className="fa-solid fa-check text-[10px] text-deep-blue" />
                     </div>
                   )}
                   <span className="text-[9px] font-display font-extrabold text-white bg-black/25 px-1.5 py-0.5 rounded-md truncate w-full text-center">

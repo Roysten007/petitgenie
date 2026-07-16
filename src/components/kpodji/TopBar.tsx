@@ -1,10 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { Sprout, Flame, Star } from "lucide-react";
 import { useKpodji } from "@/lib/kpodji-store";
 
 export function TopBar({ showStreak = true }: { showStreak?: boolean }) {
   const { seeds, streak, stars, lang, setLang, avatar } = useKpodji();
-  const faces = ["🙂", "😃", "😊", "🤗", "😎", "🤩"];
+  const faces = ["🙂", "😃", "😊", "🤗", "😎", "🤩", "🦁", "🐰", "🦊", "🐼"];
 
   return (
     <div className="px-3 pt-4 pb-1.5 flex items-center justify-between gap-2 z-20">
@@ -12,22 +11,22 @@ export function TopBar({ showStreak = true }: { showStreak?: boolean }) {
       <div className="flex items-center gap-2">
         {/* Seeds pill */}
         <div className="flex items-center gap-1.5 glass rounded-full px-3 py-1.5 shadow-sm">
-          <Sprout className="size-4 text-leaf" strokeWidth={2.5} />
+          <i className="fa-solid fa-seedling text-leaf text-sm" />
           <span className="font-display text-deep-blue text-sm font-extrabold tabular-nums">{seeds}</span>
         </div>
 
         {/* Stars pill */}
         <div className="flex items-center gap-1 glass rounded-full px-2.5 py-1.5 shadow-sm">
-          <Star className="size-4 text-ocre fill-ocre" strokeWidth={2} />
+          <i className="fa-solid fa-star text-ocre text-sm" />
           <span className="font-display text-deep-blue text-sm font-extrabold tabular-nums">{stars}</span>
         </div>
 
         {/* Streak pill */}
         {showStreak && streak > 0 && (
-          <div className="flex items-center gap-1 rounded-full px-2.5 py-1.5"
+          <div className="flex items-center gap-1.5 rounded-full px-2.5 py-1.5"
             style={{ background: "linear-gradient(135deg, oklch(0.58 0.20 38) 0%, oklch(0.68 0.18 55) 100%)" }}
           >
-            <Flame className="size-4 text-white" strokeWidth={2.5} />
+            <i className="fa-solid fa-fire text-white text-sm" />
             <span className="font-display text-white text-sm font-extrabold">{streak}j</span>
           </div>
         )}

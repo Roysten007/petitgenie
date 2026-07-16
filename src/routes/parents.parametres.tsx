@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PhoneFrame } from "@/components/kpodji/PhoneFrame";
 import { useKpodji } from "@/lib/kpodji-store";
-import { ArrowLeft } from "lucide-react";
 
 export const Route = createFileRoute("/parents/parametres")({
   component: ParametresPage,
@@ -29,8 +28,8 @@ function ParametresPage() {
   return (
     <PhoneFrame>
       <div className="px-5 pt-12 flex items-center gap-3">
-        <Link to="/parents/dashboard" className="size-10 bg-white rounded-full shadow ring-1 ring-black/5 grid place-items-center">
-          <ArrowLeft className="size-4 text-deep-blue" />
+        <Link to="/parents/dashboard" className="size-10 bg-white rounded-full shadow ring-1 ring-black/5 grid place-items-center active:scale-90 transition-transform">
+          <i className="fa-solid fa-arrow-left text-deep-blue" />
         </Link>
         <div>
           <p className="text-[11px] font-display font-extrabold uppercase tracking-widest text-terracotta">Réglages</p>
@@ -152,8 +151,8 @@ function Toggle({ label, desc, value, onChange }: { label: string; desc: string;
         <p className="font-display font-extrabold text-sm text-deep-blue">{label}</p>
         <p className="text-[11px] text-muted-foreground">{desc}</p>
       </div>
-      <div className={`w-11 h-6 rounded-full p-0.5 transition ${value ? "bg-leaf" : "bg-neutral-300"}`}>
-        <div className={`size-5 rounded-full bg-white shadow transition-transform ${value ? "translate-x-5" : "translate-x-0"}`} />
+      <div className="w-11 h-6 rounded-full p-0.5 transition" style={{ backgroundColor: value ? "oklch(0.62 0.17 150)" : "oklch(0.9 0 0)" }}>
+        <div className="size-5 rounded-full bg-white shadow transition-transform" style={{ transform: value ? "translateX(20px)" : "translateX(0px)" }} />
       </div>
     </button>
   );

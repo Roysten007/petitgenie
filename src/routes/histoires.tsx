@@ -3,7 +3,6 @@ import { PhoneFrame } from "@/components/kpodji/PhoneFrame";
 import { TopBar } from "@/components/kpodji/TopBar";
 import { BottomNav } from "@/components/kpodji/BottomNav";
 import { useKpodji } from "@/lib/kpodji-store";
-import { Play, Pause, ChevronLeft, ChevronRight, Music2 } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 import { useSpeechSynthesis } from "@/hooks/use-speech-synthesis";
 import { sfx } from "@/lib/sfx";
@@ -93,8 +92,8 @@ function HistoiresPage() {
 
       {/* Header */}
       <div className="px-4">
-        <p className="text-[11px] font-display font-extrabold uppercase tracking-widest text-terracotta">Bibliothèque</p>
-        <h1 className="font-display text-2xl font-extrabold text-deep-blue mt-0.5">Histoires de Zao</h1>
+        <p className="text-[11px] font-display font-extrabold uppercase tracking-widest text-terracotta">Le Grimoire des Voyageurs</p>
+        <h1 className="font-display text-2xl font-extrabold text-deep-blue mt-0.5">Contes de Petit Génie</h1>
       </div>
 
       {/* Featured player */}
@@ -122,7 +121,7 @@ function HistoiresPage() {
               className="size-9 rounded-full grid place-items-center transition-all active:scale-90 bg-white/10 border border-white/15"
               aria-label="Précédent"
             >
-              <ChevronLeft className="size-4 text-white" />
+              <i className="fa-solid fa-chevron-left text-white" />
             </button>
 
             {/* Story emoji — big and bouncy during playback */}
@@ -143,7 +142,7 @@ function HistoiresPage() {
               className="size-9 rounded-full grid place-items-center transition-all active:scale-90 bg-white/10 border border-white/15"
               aria-label="Suivant"
             >
-              <ChevronRight className="size-4 text-white" />
+              <i className="fa-solid fa-chevron-right text-white" />
             </button>
           </div>
 
@@ -199,9 +198,9 @@ function HistoiresPage() {
                 <div className="absolute inset-0 rounded-full animate-pulse-ring bg-ocre/35" />
               )}
               {isPlaying && !isPaused ? (
-                <Pause className="size-6 text-deep-blue animate-pulse" fill="currentColor" />
+                <i className="fa-solid fa-pause text-deep-blue text-lg" />
               ) : (
-                <Play className="size-6 text-deep-blue ml-0.5" fill="currentColor" />
+                <i className="fa-solid fa-play text-deep-blue text-lg ml-0.5" />
               )}
             </button>
 
@@ -316,8 +315,8 @@ function HistoiresPage() {
                 } : { background: "oklch(0.93 0.015 80)" }}
               >
                 {current === i
-                  ? <Music2 className="size-4 text-white" />
-                  : <Play className="size-4 text-deep-blue/50 ml-0.5" fill="currentColor" />
+                  ? <i className="fa-solid fa-music text-white text-sm" />
+                  : <i className="fa-solid fa-play text-deep-blue/50 text-sm ml-0.5" />
                 }
               </div>
             </button>

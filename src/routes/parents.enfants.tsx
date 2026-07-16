@@ -1,7 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PhoneFrame } from "@/components/kpodji/PhoneFrame";
 import { useKpodji } from "@/lib/kpodji-store";
-import { ArrowLeft, Plus, ChevronRight } from "lucide-react";
 
 export const Route = createFileRoute("/parents/enfants")({
   component: EnfantsPage,
@@ -21,8 +20,8 @@ function EnfantsPage() {
   return (
     <PhoneFrame>
       <div className="px-5 pt-12 flex items-center gap-3">
-        <Link to="/parents/dashboard" className="size-10 bg-white rounded-full shadow ring-1 ring-black/5 grid place-items-center">
-          <ArrowLeft className="size-4 text-deep-blue" />
+        <Link to="/parents/dashboard" className="size-10 bg-white rounded-full shadow ring-1 ring-black/5 grid place-items-center active:scale-90 transition-transform">
+          <i className="fa-solid fa-arrow-left text-deep-blue" />
         </Link>
         <div>
           <p className="text-[11px] font-display font-extrabold uppercase tracking-widest text-terracotta">Multi-profils</p>
@@ -79,7 +78,7 @@ function EnfantsPage() {
                   <span className="font-mono text-[9px] font-bold text-muted-foreground">{avgProgress}%</span>
                 </div>
               </div>
-              <ChevronRight className="size-5 text-neutral-300 shrink-0" />
+              <i className="fa-solid fa-chevron-right text-neutral-300 text-sm shrink-0" />
             </button>
           );
         })}
@@ -88,7 +87,7 @@ function EnfantsPage() {
           onClick={() => alert("Fonctionnalité premium de création de compte : synchronisation cloud bientôt disponible !")}
           className="w-full h-14 border-2 border-dashed border-terracotta/40 text-terracotta rounded-2xl font-display font-extrabold text-sm flex items-center justify-center gap-2 active:scale-[0.98] transition"
         >
-          <Plus className="size-4" />
+          <i className="fa-solid fa-plus text-xs" />
           Ajouter un enfant
         </button>
       </div>

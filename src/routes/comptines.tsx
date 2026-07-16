@@ -3,7 +3,6 @@ import { PhoneFrame } from "@/components/kpodji/PhoneFrame";
 import { TopBar } from "@/components/kpodji/TopBar";
 import { BottomNav } from "@/components/kpodji/BottomNav";
 import { useKpodji } from "@/lib/kpodji-store";
-import { Play, ArrowLeft } from "lucide-react";
 
 export const Route = createFileRoute("/comptines")({
   component: ComptinesPage,
@@ -17,13 +16,19 @@ function ComptinesPage() {
     <PhoneFrame>
       <TopBar />
       <div className="px-5 flex items-center gap-3">
-        <Link to="/" className="size-10 bg-white rounded-full shadow ring-1 ring-black/5 grid place-items-center">
-          <ArrowLeft className="size-4 text-deep-blue" />
+        <Link to="/" className="size-10 bg-white rounded-full shadow ring-1 ring-black/5 grid place-items-center active:scale-90 transition-transform">
+          <i className="fa-solid fa-arrow-left text-deep-blue" />
         </Link>
         <div>
-          <p className="text-[11px] font-display font-extrabold uppercase tracking-widest text-terracotta">Chanter</p>
-          <h1 className="font-display text-2xl font-extrabold text-deep-blue">Comptines</h1>
+          <p className="text-[11px] font-display font-extrabold uppercase tracking-widest text-terracotta">Chanter en route</p>
+          <h1 className="font-display text-xl font-extrabold text-deep-blue leading-tight">Chansons de Voyage</h1>
         </div>
+      </div>
+
+      <div className="px-5 mt-2">
+        <p className="text-xs text-muted-foreground leading-relaxed font-semibold">
+          Petit Génie adore fredonner sous l'ombre du grand baobab. Écoute ces mélodies traditionnelles pour te reposer entre deux chapitres ! 🌳🎵
+        </p>
       </div>
 
       <div className="px-5 mt-4 grid grid-cols-2 gap-3">
@@ -41,7 +46,7 @@ function ComptinesPage() {
               <div className="flex items-center justify-between mt-2">
                 <span className="text-[10px] font-bold opacity-80">{r.duration}</span>
                 <div className="size-8 rounded-full bg-white grid place-items-center">
-                  <Play className="size-3.5 text-deep-blue ml-0.5" fill="currentColor" />
+                  <i className="fa-solid fa-play text-deep-blue text-xs ml-0.5" />
                 </div>
               </div>
             </div>

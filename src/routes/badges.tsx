@@ -3,7 +3,6 @@ import { PhoneFrame } from "@/components/kpodji/PhoneFrame";
 import { TopBar } from "@/components/kpodji/TopBar";
 import { BottomNav } from "@/components/kpodji/BottomNav";
 import { useKpodji } from "@/lib/kpodji-store";
-import { Lock, Trophy, Sparkles, Award } from "lucide-react";
 
 export const Route = createFileRoute("/badges")({
   component: BadgesPage,
@@ -20,10 +19,10 @@ function BadgesPage() {
 
       {/* Header */}
       <div className="px-3">
-        <p className="text-[10px] font-display font-extrabold uppercase tracking-widest text-ocre flex items-center gap-1">
-          <Trophy className="size-3.5" /> Mon Coffre aux Totems
+        <p className="text-[10px] font-display font-extrabold uppercase tracking-widest text-ocre flex items-center gap-1.5">
+          <i className="fa-solid fa-trophy text-xs" /> Mon Coffre aux Totems
         </p>
-        <h1 className="font-display text-2xl font-extrabold text-deep-blue mt-0.5 leading-tight">Mes Totems de Conte</h1>
+        <h1 className="font-display text-2xl font-extrabold text-deep-blue mt-0.5 leading-tight">Les Totems de Petit Génie</h1>
 
         {/* Progress summary */}
         <div className="flex items-center gap-3 mt-3 bg-black/5 p-3 rounded-2xl">
@@ -51,7 +50,7 @@ function BadgesPage() {
               background: "linear-gradient(135deg, oklch(0.76 0.18 78) 0%, oklch(0.58 0.20 38) 100%)",
             }}
           >
-            <Award className="size-6 text-white" />
+            <i className="fa-solid fa-award text-white text-xl" />
           </div>
         </div>
       </div>
@@ -86,7 +85,7 @@ function BadgesPage() {
               {b.unlocked ? (
                 <span className="text-3xl animate-pulse">{b.emoji}</span>
               ) : (
-                <Lock className="size-5 text-muted-foreground/30" />
+                <i className="fa-solid fa-lock text-[#afafaf] text-lg" />
               )}
             </div>
 
@@ -98,12 +97,12 @@ function BadgesPage() {
                 }`}>
                   {b.name}
                 </p>
-                {b.unlocked && <Sparkles className="size-3.5 text-ocre shrink-0 animate-pulse" />}
+                {b.unlocked && <i className="fa-solid fa-wand-magic-sparkles text-ocre text-[10px] animate-pulse" />}
               </div>
               <p className={`text-[11px] leading-tight mt-0.5 ${
                 b.unlocked ? "text-muted-foreground" : "text-muted-foreground/45"
               }`}>
-                {b.unlocked ? b.desc : "Continue ton parcours pour le débloquer !"}
+                {b.unlocked ? b.desc : "Continue ton voyage avec Petit Génie pour libérer l'esprit de ce totem !"}
               </p>
             </div>
           </div>

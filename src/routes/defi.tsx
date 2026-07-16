@@ -3,7 +3,6 @@ import { PhoneFrame } from "@/components/kpodji/PhoneFrame";
 import { TopBar } from "@/components/kpodji/TopBar";
 import { MascotBubble } from "@/components/kpodji/Mascot";
 import { useKpodji } from "@/lib/kpodji-store";
-import { ArrowLeft, Flame, Zap, Star } from "lucide-react";
 
 export const Route = createFileRoute("/defi")({
   component: DefiPage,
@@ -24,7 +23,7 @@ function DefiPage() {
           to="/"
           className="size-9 glass rounded-full shadow-sm grid place-items-center transition-transform active:scale-90 shrink-0"
         >
-          <ArrowLeft className="size-4 text-deep-blue" />
+          <i className="fa-solid fa-arrow-left text-deep-blue text-sm" />
         </Link>
         <div>
           <p className="text-[10px] font-display font-extrabold uppercase tracking-widest text-terracotta">Aujourd'hui</p>
@@ -60,7 +59,7 @@ function DefiPage() {
                   className="size-7 rounded-full grid place-items-center animate-glow-ocre"
                   style={{ background: "linear-gradient(135deg, oklch(0.82 0.18 85) 0%, oklch(0.62 0.20 60) 100%)" }}
                 >
-                  <Zap className="size-3.5 text-white" fill="currentColor" />
+                  <i className="fa-solid fa-bolt text-white text-xs" />
                 </div>
                 <span className="text-[10px] font-display font-extrabold uppercase tracking-widest text-ocre">5 min · Maths & Langues</span>
               </div>
@@ -74,7 +73,7 @@ function DefiPage() {
 
             {/* Stars to earn */}
             <div className="glass rounded-2xl px-3 py-2 flex flex-col items-center shrink-0">
-              <Star className="size-5 text-ocre fill-ocre" />
+              <i className="fa-solid fa-star text-ocre text-lg" />
               <span className="font-display font-extrabold text-white text-sm mt-0.5">+3</span>
             </div>
           </div>
@@ -109,7 +108,7 @@ function DefiPage() {
                 boxShadow: "0 6px 24px oklch(0.58 0.20 38 / 50%)",
               }}
             >
-              <Flame className="size-7 text-white" fill="currentColor" />
+              <i className="fa-solid fa-fire text-white text-2xl" />
             </div>
             <div>
               <p className="font-display text-3xl font-extrabold text-deep-blue leading-none">

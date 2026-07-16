@@ -44,6 +44,14 @@ export interface ChildProfile {
   timeSpentThisWeek: number; // in minutes
   soundEnabled?: boolean;
   notifEnabled?: boolean;
+  
+  // New properties for adaptive difficulty, XP and fiches
+  xp: number;
+  levelAlphabet: 1 | 2 | 3;
+  levelMarche: 1 | 2 | 3;
+  levelScience: 1 | 2 | 3;
+  lastRaconteFiche: { title: string; content: string; question: string } | null;
+  completedChapters: string[];
 }
 
 export interface KpodjiState {
@@ -58,7 +66,7 @@ export interface KpodjiState {
   stories: Story[];
   rhymes: Story[];
   
-  // New properties for multi-profiles
+  // Multi-profiles and settings
   profiles: ChildProfile[];
   activeProfileId: string;
   activeProfile: ChildProfile;
@@ -70,6 +78,18 @@ export interface KpodjiState {
   setChildName: (n: string) => void;
   setAvatar: (a: { face: number; outfit: number; accessory: number }) => void;
   advanceDistrict: (id: DistrictId, delta: number) => void;
+
+  // New states and actions
+  xp: number;
+  levelAlphabet: 1 | 2 | 3;
+  levelMarche: 1 | 2 | 3;
+  levelScience: 1 | 2 | 3;
+  lastRaconteFiche: { title: string; content: string; question: string } | null;
+  completedChapters: string[];
+  addXp: (amount: number) => void;
+  updateLevel: (module: "alphabet" | "marche" | "science", level: 1 | 2 | 3) => void;
+  setLastRaconteFiche: (fiche: { title: string; content: string; question: string } | null) => void;
+  completeChapter: (chapterId: string) => void;
 }
 
 const KpodjiCtx = createContext<KpodjiState | null>(null);
@@ -152,7 +172,13 @@ const initialProfiles: ChildProfile[] = [
       { id: "morale", name: "Valeurs", subject: "Respect & Politesse", color: "terracotta", progress: 50, emoji: "🤝" },
       { id: "riviere", name: "La Rivière", subject: "Fractions", color: "leaf", progress: 0, emoji: "🐟" },
       { id: "place", name: "La Place", subject: "Défi bilingue", color: "terracotta", progress: 0, emoji: "🌳" },
-    ]
+    ],
+    xp: 450,
+    levelAlphabet: 2,
+    levelMarche: 1,
+    levelScience: 1,
+    lastRaconteFiche: null,
+    completedChapters: [],
   },
   {
     id: "p2",
@@ -174,7 +200,13 @@ const initialProfiles: ChildProfile[] = [
       { id: "morale", name: "Valeurs", subject: "Politesse & Émotions", color: "terracotta", progress: 40, emoji: "🤝" },
       { id: "riviere", name: "La Rivière", subject: "Formes & Tailles", color: "leaf", progress: 0, emoji: "🐟" },
       { id: "place", name: "La Place", subject: "Jeux bilingues", color: "terracotta", progress: 0, emoji: "🌳" },
-    ]
+    ],
+    xp: 220,
+    levelAlphabet: 1,
+    levelMarche: 1,
+    levelScience: 1,
+    lastRaconteFiche: null,
+    completedChapters: [],
   },
   {
     id: "p3",
@@ -196,7 +228,17 @@ const initialProfiles: ChildProfile[] = [
       { id: "morale", name: "Valeurs", subject: "Civisme & Entraide", color: "terracotta", progress: 60, emoji: "🤝" },
       { id: "riviere", name: "La Rivière", subject: "Problèmes de partage", color: "leaf", progress: 0, emoji: "🐟" },
       { id: "place", name: "La Place", subject: "Grand Défi bilingue", color: "terracotta", progress: 0, emoji: "🌳" },
-    ]
+    ],
+    xp: 890,
+    levelAlphabet: 3,
+    levelMarche: 2,
+    levelScience: 1,
+    lastRaconteFiche: {
+      title: "Alphabet et les Sons",
+      content: "L'enfant a exploré les sons des lettres de A à E et sait associer le vocabulaire bilingue.",
+      question: "Quel fruit commence par le son B ?"
+    },
+    completedChapters: ["alphabet"],
   }
 ];
 
@@ -254,6 +296,49 @@ export function KpodjiProvider({ children }: { children: ReactNode }) {
                 d.id === districtId ? { ...d, progress: Math.min(100, d.progress + delta) } : d
               );
               return { ...p, districts: updatedDistricts };
+            }
+            return p;
+          })
+        );
+      },
+      
+      // New property mappings and helpers
+      xp: activeProfile.xp,
+      levelAlphabet: activeProfile.levelAlphabet,
+      levelMarche: activeProfile.levelMarche,
+      levelScience: activeProfile.levelScience,
+      lastRaconteFiche: activeProfile.lastRaconteFiche,
+      completedChapters: activeProfile.completedChapters,
+      addXp: (amount) => {
+        setProfiles((prev) =>
+          prev.map((p) => (p.id === activeProfileId ? { ...p, xp: p.xp + amount } : p))
+        );
+      },
+      updateLevel: (module, level) => {
+        setProfiles((prev) =>
+          prev.map((p) => {
+            if (p.id === activeProfileId) {
+              if (module === "alphabet") return { ...p, levelAlphabet: level };
+              if (module === "marche") return { ...p, levelMarche: level };
+              if (module === "science") return { ...p, levelScience: level };
+            }
+            return p;
+          })
+        );
+      },
+      setLastRaconteFiche: (fiche) => {
+        setProfiles((prev) =>
+          prev.map((p) => (p.id === activeProfileId ? { ...p, lastRaconteFiche: fiche } : p))
+        );
+      },
+      completeChapter: (chapterId) => {
+        setProfiles((prev) =>
+          prev.map((p) => {
+            if (p.id === activeProfileId) {
+              const chapters = p.completedChapters.includes(chapterId)
+                ? p.completedChapters
+                : [...p.completedChapters, chapterId];
+              return { ...p, completedChapters: chapters };
             }
             return p;
           })

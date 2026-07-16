@@ -1,12 +1,11 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Home, Sprout, BookOpen, Trophy, BookA } from "lucide-react";
 
 const items = [
-  { to: "/",          label: "Village",  Icon: Home },
-  { to: "/alphabet",  label: "ABC",      Icon: BookA },
-  { to: "/histoires", label: "Histoires",Icon: BookOpen },
-  { to: "/badges",    label: "Badges",   Icon: Trophy },
-  { to: "/jardin",    label: "Jardin",   Icon: Sprout },
+  { to: "/",          label: "Village",  iconClass: "fa-solid fa-house" },
+  { to: "/alphabet",  label: "ABC",      iconClass: "fa-solid fa-font" },
+  { to: "/histoires", label: "Contes",    iconClass: "fa-solid fa-book-open" },
+  { to: "/badges",    label: "Totems",   iconClass: "fa-solid fa-award" },
+  { to: "/jardin",    label: "Jardin",   iconClass: "fa-solid fa-seedling" },
 ] as const;
 
 export function BottomNav() {
@@ -19,7 +18,7 @@ export function BottomNav() {
           boxShadow: "0 8px 32px oklch(0.18 0.08 255 / 18%), 0 2px 8px oklch(0.18 0.08 255 / 12%)",
         }}
       >
-        {items.map(({ to, label, Icon }) => {
+        {items.map(({ to, label, iconClass }) => {
           const active = pathname === to;
           return (
             <Link
@@ -36,9 +35,8 @@ export function BottomNav() {
                   boxShadow: "0 6px 20px oklch(0.58 0.20 38 / 50%)",
                 } : {}}
               >
-                <Icon
-                  className={`size-5 transition-colors duration-300 ${active ? "text-white" : "text-deep-blue/40"}`}
-                  strokeWidth={2.5}
+                <i
+                  className={`${iconClass} text-lg transition-colors duration-300 ${active ? "text-white" : "text-deep-blue/40"}`}
                 />
               </div>
               <span className={`text-[9px] font-display font-extrabold transition-colors duration-300 ${active ? "text-terracotta" : "text-deep-blue/35"}`}>

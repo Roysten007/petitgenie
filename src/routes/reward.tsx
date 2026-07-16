@@ -2,7 +2,6 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PhoneFrame } from "@/components/kpodji/PhoneFrame";
 import { Mascot } from "@/components/kpodji/Mascot";
 import { useKpodji } from "@/lib/kpodji-store";
-import { Sprout, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/reward")({
@@ -128,8 +127,8 @@ function Reward() {
           className={`flex gap-3 transition-all duration-500 delay-500 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
         >
           {[
-            { icon: <Sprout className="size-5 text-leaf" />, label: "+10 graines" },
-            { icon: <Star className="size-5 text-ocre fill-ocre" />, label: "+1 étoile" },
+            { icon: <i className="fa-solid fa-seedling text-leaf text-base" />, label: "+10 graines" },
+            { icon: <i className="fa-solid fa-star text-ocre text-base" />, label: "+1 étoile" },
             { icon: <span className="text-lg">🔥</span>, label: "Série !" },
           ].map(({ icon, label }, i) => (
             <div
