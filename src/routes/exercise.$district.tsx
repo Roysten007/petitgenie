@@ -17,6 +17,7 @@ export const Route = createFileRoute("/exercise/$district")({
 
 interface Question {
   intro: string;
+  zaoIntro?: string;
   prompt: string;
   visual?: { emoji: string; count: number };
   choices: string[];
@@ -26,80 +27,80 @@ interface Question {
 const questionsByBracketAndDistrict: Record<"4-6" | "7-8" | "9-10", Record<DistrictId, Question[]>> = {
   "4-6": {
     marche: [
-      { intro: "Le Marché • Compter", prompt: "Combien de bananes vois-tu ?", visual: { emoji: "🍌", count: 3 }, choices: ["2", "3", "4", "5"], answer: 1 },
-      { intro: "Le Marché • Addition", prompt: "Tu as 2 mangues 🥭🥭. Zao t'en donne 1 🥭. Combien en as-tu ?", choices: ["2", "3", "4"], answer: 1 },
+      { intro: "Le Marché • Compter", zaoIntro: "Fatou vend de magnifiques bananes douces au marché de Kpodji. Regarde son panier !", prompt: "Combien de bananes vois-tu ?", visual: { emoji: "🍌", count: 3 }, choices: ["2", "3", "4", "5"], answer: 1 },
+      { intro: "Le Marché • Addition", zaoIntro: "Zao a faim après sa longue course. Il s'approche du stand de fruits de Fatou.", prompt: "Tu as 2 mangues 🥭🥭. Zao t'en donne 1 🥭. Combien en as-tu ?", choices: ["2", "3", "4"], answer: 1 },
     ],
     ecole: [
-      { intro: "L'École • Anglais", prompt: "Comment dit-on 'Bonjour' ?", choices: ["Hello", "Goodbye", "Thank you"], answer: 0 },
-      { intro: "L'École • Animaux", prompt: "Quel animal est un 'Lion' 🦁 ?", choices: ["Chien", "Chat", "Lion"], answer: 2 },
+      { intro: "L'École • Anglais", zaoIntro: "Zao rencontre un nouvel ami qui vient d'un autre pays. Commençons par le saluer !", prompt: "Comment dit-on 'Bonjour' ?", choices: ["Hello", "Goodbye", "Thank you"], answer: 0 },
+      { intro: "L'École • Animaux", zaoIntro: "Dans la forêt sacrée, le roi des animaux pousse un cri majestueux pour rassembler tout le monde.", prompt: "Quel animal est un 'Lion' 🦁 ?", choices: ["Chien", "Chat", "Lion"], answer: 2 },
     ],
     riviere: [
-      { intro: "La Rivière • Formes", prompt: "Quelle forme est ronde ?", choices: ["Triangle ▲", "Carré ■", "Cercle ●"], answer: 2 },
-      { intro: "La Rivière • Tailles", prompt: "Qui est le plus grand ?", choices: ["La fourmi 🐜", "L'éléphant 🐘", "Le chat 🐈"], answer: 1 },
+      { intro: "La Rivière • Formes", zaoIntro: "Les galets polis par l'eau de la rivière ont des formes géométriques parfaites.", prompt: "Quelle forme est ronde ?", choices: ["Triangle ▲", "Carré ■", "Cercle ●"], answer: 2 },
+      { intro: "La Rivière • Tailles", zaoIntro: "Zao s'amuse à comparer les créatures du village de Kpodji. Certaines sont petites, d'autres géantes !", prompt: "Qui est le plus grand ?", choices: ["La fourmi 🐜", "L'éléphant 🐘", "Le chat 🐈"], answer: 1 },
     ],
     place: [
-      { intro: "La Place • Mots", prompt: "Que signifie 'Two' en français ?", choices: ["Un", "Deux", "Trois"], answer: 1 },
-      { intro: "La Place • Anglais", prompt: "Comment dit-on 'Bleu' ?", choices: ["Red", "Blue", "Green"], answer: 1 },
+      { intro: "La Place • Mots", zaoIntro: "Sous le grand Baobab de la place du village, nous apprenons à compter en anglais.", prompt: "Que signifie 'Two' en français ?", choices: ["Un", "Deux", "Trois"], answer: 1 },
+      { intro: "La Place • Anglais", zaoIntro: "Zao lève les yeux. Le ciel au-dessus de la place publique est d'un bleu magnifique !", prompt: "Comment dit-on 'Bleu' ?", choices: ["Red", "Blue", "Green"], answer: 1 },
     ],
     science: [
-      { intro: "Sciences • Nature", prompt: "Quel animal pond des œufs ?", choices: ["Chèvre 🐐", "Poule 🐔", "Chien 🐕"], answer: 1 },
-      { intro: "Sciences • Plantes", prompt: "De quoi les plantes ont-elles besoin ?", choices: ["De soleil et d'eau ☀️💧", "De bonbons 🍬", "De jouets 🧸"], answer: 0 },
+      { intro: "Sciences • Nature", zaoIntro: "Dans le poulailler du village, la fermière Awa ramasse les cadeaux des oiseaux.", prompt: "Quel animal pond des œufs ?", choices: ["Chèvre 🐐", "Poule 🐔", "Chien 🐕"], answer: 1 },
+      { intro: "Sciences • Plantes", zaoIntro: "Pour faire germer le beau mil et le maïs de notre potager, de quoi les pousses ont-elles besoin ?", prompt: "De quoi les plantes ont-elles besoin ?", choices: ["De soleil et d'eau ☀️💧", "De bonbons 🍬", "De jouets 🧸"], answer: 0 },
     ],
     morale: [
-      { intro: "Valeurs • Politesse", prompt: "Que dis-tu quand on te donne une mangue 🥭 ?", choices: ["C'est à moi !", "Merci ! 🌟", "Rien"], answer: 1 },
-      { intro: "Valeurs • Émotions", prompt: "Comment se sent le lièvre s'il sourit ? 😃", choices: ["Triste", "En colère", "Heureux"], answer: 2 },
+      { intro: "Valeurs • Politesse", zaoIntro: "Fatou te tend une mangue sucrée et mûre avec un grand sourire chaleureux.", prompt: "Que dis-tu quand on te donne une mangue 🥭 ?", choices: ["C'est à moi !", "Merci ! 🌟", "Rien"], answer: 1 },
+      { intro: "Valeurs • Émotions", zaoIntro: "Zao le lièvre adore rire et s'amuser avec ses amis sous le soleil du village.", prompt: "Comment se sent le lièvre s'il sourit ? 😃", choices: ["Triste", "En colère", "Heureux"], answer: 2 },
     ],
   },
   "7-8": {
     marche: [
-      { intro: "Le Marché • Mathématiques", prompt: "Combien de mangues vois-tu ?", visual: { emoji: "🥭", count: 5 }, choices: ["4", "5", "6", "3"], answer: 1 },
-      { intro: "Le Marché • FCFA", prompt: "100 FCFA + 200 FCFA = ?", choices: ["200 FCFA", "250 FCFA", "300 FCFA", "400 FCFA"], answer: 2 },
-      { intro: "Le Marché • Soustraction", prompt: "Tu as 8 bananes, tu en manges 3. Combien reste-t-il ?", visual: { emoji: "🍌", count: 8 }, choices: ["3", "4", "5", "6"], answer: 2 },
+      { intro: "Le Marché • Mathématiques", zaoIntro: "Le marché de Kpodji déborde de couleurs vives et de fruits frais récoltés ce matin !", prompt: "Combien de mangues vois-tu ?", visual: { emoji: "🥭", count: 5 }, choices: ["4", "5", "6", "3"], answer: 1 },
+      { intro: "Le Marché • FCFA", zaoIntro: "Zao compte ses pièces de monnaie pour s'acheter un bon goûter traditionnel.", prompt: "100 FCFA + 200 FCFA = ?", choices: ["200 FCFA", "250 FCFA", "300 FCFA", "400 FCFA"], answer: 2 },
+      { intro: "Le Marché • Soustraction", zaoIntro: "Un singe farceur s'est faufilé sur notre stand de bananes alors que nous ne regardions pas !", prompt: "Tu as 8 bananes, tu en manges 3. Combien reste-t-il ?", visual: { emoji: "🍌", count: 8 }, choices: ["3", "4", "5", "6"], answer: 2 },
     ],
     ecole: [
-      { intro: "L'École • English", prompt: "How do you say 'Bonjour' ?", choices: ["Bye", "Hello", "Thanks", "Please"], answer: 1 },
-      { intro: "L'École • Colors", prompt: "What color is 'Rouge' ?", choices: ["Blue", "Green", "Red", "Yellow"], answer: 2 },
-      { intro: "L'École • Numbers", prompt: "How do you say '3' in English ?", choices: ["Two", "Three", "Four", "Five"], answer: 1 },
+      { intro: "L'École • English", zaoIntro: "Zao s'entraîne à saluer en anglais les voyageurs qui s'arrêtent près de l'école.", prompt: "How do you say 'Bonjour' ?", choices: ["Bye", "Hello", "Thanks", "Please"], answer: 1 },
+      { intro: "L'École • Colors", zaoIntro: "La maîtresse demande à Zao de trouver la couleur vive du drapeau de notre village.", prompt: "What color is 'Rouge' ?", choices: ["Blue", "Green", "Red", "Yellow"], answer: 2 },
+      { intro: "L'École • Numbers", zaoIntro: "Zao écrit des chiffres au tableau noir pour s'exercer à compter dans les deux langues.", prompt: "How do you say '3' in English ?", choices: ["Two", "Three", "Four", "Five"], answer: 1 },
     ],
     riviere: [
-      { intro: "La Rivière • Fractions", prompt: "La moitié de 10 = ?", choices: ["3", "4", "5", "6"], answer: 2 },
-      { intro: "La Rivière • Mesures", prompt: "Combien de doigts sur 2 mains ?", visual: { emoji: "✋", count: 2 }, choices: ["8", "10", "12", "5"], answer: 1 },
+      { intro: "La Rivière • Fractions", zaoIntro: "Zao veut partager équitablement son goûter de mangues avec son amie Fatou.", prompt: "La moitié de 10 = ?", choices: ["3", "4", "5", "6"], answer: 2 },
+      { intro: "La Rivière • Mesures", zaoIntro: "Levons nos deux mains bien haut vers le ciel pour compter tous nos doigts ensemble !", prompt: "Combien de doigts sur 2 mains ?", visual: { emoji: "✋", count: 2 }, choices: ["8", "10", "12", "5"], answer: 1 },
     ],
     place: [
-      { intro: "La Place • Défi bilingue", prompt: "Il y a 'three' mangues. Combien en français ?", visual: { emoji: "🥭", count: 3 }, choices: ["Deux", "Trois", "Quatre", "Cinq"], answer: 1 },
-      { intro: "La Place • Défi bilingue", prompt: "'Two' + 'three' = ?", choices: ["Four", "Five", "Six", "Seven"], answer: 1 },
+      { intro: "La Place • Défi bilingue", zaoIntro: "Zao s'assoit sous le grand Baobab à palabres avec les sages du village.", prompt: "Il y a 'three' mangues. Combien en français ?", visual: { emoji: "🥭", count: 3 }, choices: ["Deux", "Trois", "Quatre", "Cinq"], answer: 1 },
+      { intro: "La Place • Défi bilingue", zaoIntro: "Zao fait un petit jeu de calcul mental bilingue avec les autres enfants du village.", prompt: "'Two' + 'three' = ?", choices: ["Four", "Five", "Six", "Seven"], answer: 1 },
     ],
     science: [
-      { intro: "Sciences • Nature", prompt: "D'où vient la pluie ?", choices: ["Des nuages ☁️", "De la mer directement 🌊", "Des arbres 🌳"], answer: 0 },
-      { intro: "Sciences • Corps", prompt: "De quoi le corps a-t-il besoin pour grandir ?", choices: ["Des vitamines 🍎", "Des sodas 🥤", "De rien"], answer: 0 },
+      { intro: "Sciences • Nature", zaoIntro: "Regarde ces grands nuages gris et lourds qui se forment au-dessus du fleuve Niger.", prompt: "D'où vient la pluie ?", choices: ["Des nuages ☁️", "De la mer directement 🌊", "Des arbres 🌳"], answer: 0 },
+      { intro: "Sciences • Corps", zaoIntro: "Pour courir aussi vite que Zao le lièvre et grandir en bonne santé au village...", prompt: "De quoi le corps a-t-il besoin pour grandir ?", choices: ["Des vitamines 🍎", "Des sodas 🥤", "De rien"], answer: 0 },
     ],
     morale: [
-      { intro: "Valeurs • Entraide", prompt: "Si un ami tombe dans la cour, que fais-tu ?", choices: ["Je ris", "Je l'aide à se relever 🤝", "Je l'ignore"], answer: 1 },
+      { intro: "Valeurs • Entraide", zaoIntro: "Moussa a glissé sur le chemin de terre humide après la pluie de la nuit.", prompt: "Si un ami tombe dans la cour, que fais-tu ?", choices: ["Je ris", "Je l'aide à se relever 🤝", "Je l'ignore"], answer: 1 },
       { intro: "Valeurs • Respect", prompt: "Respecter les aînés au village, c'est...", choices: ["Une belle valeur 🌟", "Inutile", "Pour rigoler"], answer: 0 },
     ],
   },
   "9-10": {
     marche: [
-      { intro: "Le Marché • FCFA", prompt: "Tu achètes un cahier à 350 FCFA. Tu donnes 500 FCFA. On te rend...", choices: ["100 FCFA", "150 FCFA", "200 FCFA"], answer: 1 },
-      { intro: "Le Marché • Division", prompt: "4 stylos coûtent 200 FCFA. Combien coûte 1 stylo ?", choices: ["40 FCFA", "50 FCFA", "60 FCFA"], answer: 1 },
+      { intro: "Le Marché • FCFA", zaoIntro: "Zao calcule sa monnaie après avoir acheté de beaux cahiers pour l'école.", prompt: "Tu achètes un cahier à 350 FCFA. Tu donnes 500 FCFA. On te rend...", choices: ["100 FCFA", "150 FCFA", "200 FCFA"], answer: 1 },
+      { intro: "Le Marché • Division", zaoIntro: "Fatou veut étiqueter ses fournitures scolaires pour afficher le prix de chaque article.", prompt: "4 stylos coûtent 200 FCFA. Combien coûte 1 stylo ?", choices: ["40 FCFA", "50 FCFA", "60 FCFA"], answer: 1 },
     ],
     ecole: [
-      { intro: "L'École • Grammaire", prompt: "Fill in: 'They ___ playing football now.'", choices: ["is", "am", "are", "be"], answer: 2 },
-      { intro: "L'École • Conjugaison", prompt: "Past tense of 'Go' ?", choices: ["Goed", "Went", "Gone"], answer: 1 },
+      { intro: "L'École • Grammaire", zaoIntro: "Les enfants du village s'entraînent sous le préau à décrire leur jeu de football.", prompt: "Fill in: 'They ___ playing football now.'", choices: ["is", "am", "are", "be"], answer: 2 },
+      { intro: "L'École • Conjugaison", zaoIntro: "Zao prépare ses bagages pour voyager à Accra et révise ses verbes en anglais.", prompt: "Past tense of 'Go' ?", choices: ["Goed", "Went", "Gone"], answer: 1 },
     ],
     riviere: [
-      { intro: "La Rivière • Fractions", prompt: "Si un poisson mange 1/4 le matin et 2/4 le soir, il a mangé...", choices: ["1/4", "2/4", "3/4", "4/4"], answer: 2 },
+      { intro: "La Rivière • Fractions", zaoIntro: "Zao observe les poissons agiles nager et manger à différents moments du jour.", prompt: "Si un poisson mange 1/4 le matin et 2/4 le soir, il a mangé...", choices: ["1/4", "2/4", "3/4", "4/4"], answer: 2 },
     ],
     place: [
-      { intro: "La Place • Traduction", prompt: "Translate: 'We love Kpodji village.'", choices: ["Nous détestons le village", "Nous habitons au village", "Nous aimons le village de Kpodji ❤️"], answer: 2 },
+      { intro: "La Place • Traduction", zaoIntro: "Zao le griot récite une belle formule d'amour pour notre terre de Kpodji.", prompt: "Translate: 'We love Kpodji village.'", choices: ["Nous détestons le village", "Nous habitons au village", "Nous aimons le village de Kpodji ❤️"], answer: 2 },
     ],
     science: [
-      { intro: "Sciences • Physique", prompt: "Qu'est-ce qui conduit le mieux l'électricité ?", choices: ["Le bois", "Le plastique", "L'eau et les métaux ⚡", "Le verre"], answer: 2 },
-      { intro: "Sciences • Eau", prompt: "Le cycle de l'eau comprend l'évaporation, puis...", choices: ["La condensation et la pluie 🌧️", "La disparition de l'eau", "Rien"], answer: 0 },
+      { intro: "Sciences • Physique", zaoIntro: "Zao fait des expériences scientifiques avec différents matériaux du village.", prompt: "Qu'est-ce qui conduit le mieux l'électricité ?", choices: ["Le bois", "Le plastique", "L'eau et les métaux ⚡", "Le verre"], answer: 2 },
+      { intro: "Sciences • Eau", zaoIntro: "Les conteurs du village nous racontent le fabuleux voyage et le cycle de l'eau.", prompt: "Le cycle de l'eau comprend l'évaporation, puis...", choices: ["La condensation et la pluie 🌧️", "La disparition de l'eau", "Rien"], answer: 0 },
     ],
     morale: [
-      { intro: "Valeurs • Civisme", prompt: "Pour garder le village propre, je dois...", choices: ["Jeter mes déchets par terre", "Jeter mes déchets à la poubelle 🗑️", "Ne rien faire"], answer: 1 },
-      { intro: "Valeurs • Communauté", prompt: "Qu'est-ce que l'entraide communautaire ?", choices: ["Travailler seul", "S'entraider pour bâtir ensemble 🌾", "Se disputer"], answer: 1 },
+      { intro: "Valeurs • Civisme", zaoIntro: "Pour garder notre beau village propre et préserver la nature sauvage...", prompt: "Pour garder le village propre, je dois...", choices: ["Jeter mes déchets par terre", "Jeter mes déchets à la poubelle 🗑️", "Ne rien faire"], answer: 1 },
+      { intro: "Valeurs • Communauté", zaoIntro: "Les sages racontent l'importance de s'entraider lors des moissons de mil.", prompt: "Qu'est-ce que l'entraide communautaire ?", choices: ["Travailler seul", "S'entraider pour bâtir ensemble 🌾", "Se disputer"], answer: 1 },
     ],
   },
 };
@@ -151,16 +152,19 @@ function Exercise() {
     const isEnglish = q.prompt.toLowerCase().includes("how do you say") || q.prompt.toLowerCase().includes("fill in") || q.prompt.toLowerCase().includes("translate");
     const questionLang = isEnglish ? "en" : "fr";
 
-    const parts = [
-      { text: q.prompt, lang: questionLang }
-    ];
+    const parts: { text: string; lang: "fr" | "en" }[] = [];
+
+    // Speak Zao's narrative introduction first if it exists
+    if (q.zaoIntro) {
+      parts.push({ text: q.zaoIntro, lang: "fr" });
+    }
+
+    parts.push({ text: q.prompt, lang: questionLang });
 
     q.choices.forEach((choice, index) => {
       // Clean up special characters like ▲ ■ ●
       const cleanChoice = choice.replace(/[▲■●]/g, "").trim();
-      const choiceText = questionLang === "fr"
-        ? `, Option ${index + 1} : ${cleanChoice}.`
-        : `, Option ${index + 1} : ${cleanChoice}.`;
+      const choiceText = `, Option ${index + 1} : ${cleanChoice}.`;
       parts.push({ text: choiceText, lang: questionLang });
     });
 
@@ -252,11 +256,24 @@ function Exercise() {
       <div className="flex-1 flex flex-col px-5 pt-5">
         {/* Intro pill */}
         <span
-          className="self-center text-[10px] font-display font-extrabold tracking-[0.18em] uppercase mb-4 px-3 py-1.5 rounded-full animate-slide-down"
+          className="self-center text-[10px] font-display font-extrabold tracking-[0.18em] uppercase mb-3 px-3 py-1.5 rounded-full animate-slide-down"
           style={{ background: "oklch(0.58 0.20 38 / 10%)", color: "oklch(0.58 0.20 38)" }}
         >
           {q.intro}
         </span>
+
+        {/* Zao narrative speech bubble */}
+        {q.zaoIntro && (
+          <div className="mb-4 flex items-end gap-2.5 bg-ocre/10 rounded-2xl p-3 border border-ocre/20 shadow-xs relative animate-pop-in">
+            <Mascot size={64} variant={isPlaying ? "walk" : "idle"} animate={isPlaying ? "float" : "none"} className="shrink-0" />
+            <div className="flex-1">
+              <span className="text-[8px] font-display font-extrabold text-[#E06500] uppercase tracking-wider">🎙️ Zao raconte...</span>
+              <p className="font-display font-semibold text-deep-blue text-[11px] leading-relaxed mt-0.5">
+                {q.zaoIntro}
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Prompt with Speaker Button for Kids */}
         <div className="flex flex-col items-center gap-3 mb-5">

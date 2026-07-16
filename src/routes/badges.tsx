@@ -21,16 +21,16 @@ function BadgesPage() {
       {/* Header */}
       <div className="px-3">
         <p className="text-[10px] font-display font-extrabold uppercase tracking-widest text-ocre flex items-center gap-1">
-          <Trophy className="size-3.5" /> Ma Vitrine de Champions
+          <Trophy className="size-3.5" /> Mon Coffre aux Totems
         </p>
-        <h1 className="font-display text-2xl font-extrabold text-deep-blue mt-0.5 leading-tight">Mes Médailles &amp; Badges</h1>
+        <h1 className="font-display text-2xl font-extrabold text-deep-blue mt-0.5 leading-tight">Mes Totems de Conte</h1>
 
         {/* Progress summary */}
         <div className="flex items-center gap-3 mt-3 bg-black/5 p-3 rounded-2xl">
           <div className="flex-1">
             <div className="flex items-center justify-between mb-1.5">
               <span className="text-[10px] font-display font-extrabold text-deep-blue uppercase tracking-wider">
-                {unlocked} / {badges.length} Gagnés !
+                {unlocked} / {badges.length} Totems Libérés !
               </span>
               <span className="text-[11px] font-display font-extrabold text-terracotta">{pct}%</span>
             </div>

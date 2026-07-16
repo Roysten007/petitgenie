@@ -220,13 +220,26 @@ function Village() {
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-md mx-auto px-6 pt-6 pb-28">
 
+            {/* Zao the Griot Opening Speech Bubble */}
+            <div className="mb-6 flex items-end gap-3 bg-ocre/10 rounded-3xl p-4 border border-ocre/20 shadow-xs relative animate-pop-in">
+              <Mascot size={76} variant="idle" animate="breathe" className="shrink-0" />
+              <div className="flex-1">
+                <span className="text-[9px] font-display font-extrabold text-terracotta uppercase tracking-wider">🎙️ Zao le Griot raconte...</span>
+                <p className="font-display font-bold text-deep-blue text-xs leading-relaxed mt-0.5">
+                  {lang === "fr" 
+                    ? "« Salut, petit conteur ! Aujourd'hui, nous marchons sur le chemin sablonneux de Kpodji. Viens avec moi pour apprendre les lettres du marché ! »" 
+                    : "“Hello, little storyteller! Today we walk the sandy paths of Kpodji. Come with me to learn the letters of the market!”"}
+                </p>
+              </div>
+            </div>
+
             {/* Unit banner */}
             <div className="bg-[#E06500] rounded-2xl p-4 text-white mb-10 relative overflow-hidden">
               <div className="absolute inset-0 kente-pattern opacity-15" />
               <div className="relative z-10 flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] font-display font-extrabold uppercase tracking-widest text-white/70">← Chapitre 1, Unité 1</span>
-                  <h2 className="font-display text-lg font-extrabold leading-tight mt-0.5">Commercer au Marché</h2>
+                  <span className="text-[10px] font-display font-extrabold uppercase tracking-widest text-white/70">📖 Le Voyage de Zao · Chapitre 1</span>
+                  <h2 className="font-display text-lg font-extrabold leading-tight mt-0.5">Zao et les lettres du marché</h2>
                 </div>
                 <Link
                   to="/defi"
@@ -398,7 +411,7 @@ function Village() {
         <div className="bg-white border-2 border-[#e5e5e5] rounded-2xl p-4">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-display font-extrabold text-base text-[#3c3c3c] flex items-center gap-2">
-              <Trophy className="size-5 text-[#ffc800]" /> Ligue Bronze
+              <Trophy className="size-5 text-[#ffc800]" /> Ligue des Conteurs
             </h3>
           </div>
           <div className="space-y-1.5">
@@ -418,12 +431,12 @@ function Village() {
                     {p.name} {(p as any).isMe && <span className="text-[#1cb0f6] text-[10px]">(toi)</span>}
                   </span>
                 </div>
-                <span className="font-mono text-sm font-bold text-[#afafaf] tabular-nums">{p.xp} XP</span>
+                <span className="font-mono text-sm font-bold text-[#afafaf] tabular-nums">{p.xp} Graines</span>
               </div>
             ))}
           </div>
           <Link to="/badges" className="block mt-3 text-center text-xs font-display font-extrabold text-[#1cb0f6] uppercase tracking-wider hover:underline">
-            Voir le classement →
+            Voir le classement des conteurs →
           </Link>
         </div>
 
@@ -431,7 +444,7 @@ function Village() {
         <div className="bg-white border-2 border-[#e5e5e5] rounded-2xl p-4">
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-display font-extrabold text-base text-[#3c3c3c] flex items-center gap-2">
-              Quêtes du jour
+              Missions du Griot
             </h3>
             <span className="text-xs font-display font-extrabold text-[#1cb0f6] uppercase tracking-wider cursor-pointer hover:underline">
               Afficher tout
@@ -440,7 +453,7 @@ function Village() {
           <div className="flex items-center gap-3">
             <Zap className="size-10 text-[#ffc800] shrink-0" fill="#ffc800" />
             <div className="flex-1">
-              <p className="font-display font-extrabold text-sm text-[#3c3c3c]">Gagne 10 XP</p>
+              <p className="font-display font-extrabold text-sm text-[#3c3c3c]">Gagne 10 Graines</p>
               <div className="mt-1.5 h-3 bg-[#e5e5e5] rounded-full overflow-hidden relative">
                 <div
                   className="h-full bg-[#ffc800] rounded-full transition-all duration-700"
@@ -460,9 +473,9 @@ function Village() {
             <Mascot size={55} variant="default" animate="float" />
           </div>
           <div>
-            <p className="text-[10px] font-display font-extrabold text-[#E06500] uppercase tracking-wider">Aujourd'hui</p>
+            <p className="text-[10px] font-display font-extrabold text-[#E06500] uppercase tracking-wider">Feu de camp allumé</p>
             <p className="text-xs font-bold text-[#3c3c3c] leading-snug">
-              "Salut ! C'est moi, Zao. Prêt à continuer ton aventure ?" 🌾
+              "Garde le feu de camp allumé en venant écouter mes histoires chaque jour !" 🪵🔥
             </p>
           </div>
         </div>

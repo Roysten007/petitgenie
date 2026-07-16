@@ -13,11 +13,11 @@ export const Route = createFileRoute("/avatar")({
 
 const faces = ["🙂", "😃", "😊", "🤗", "😎", "🤩", "🦁", "🐰", "🦊", "🐼"];
 const outfits = [
-  { label: "Wax orange", color: "terracotta", style: { background: "linear-gradient(135deg, oklch(0.58 0.20 38) 0%, oklch(0.48 0.18 28) 100%)" } },
-  { label: "Wax bleu",   color: "deep-blue",  style: { background: "linear-gradient(135deg, oklch(0.22 0.10 255) 0%, oklch(0.16 0.08 268) 100%)" } },
-  { label: "Wax vert",   color: "leaf",        style: { background: "linear-gradient(135deg, oklch(0.52 0.16 148) 0%, oklch(0.42 0.14 165) 100%)" } },
-  { label: "Wax ocre",   color: "ocre",        style: { background: "linear-gradient(135deg, oklch(0.76 0.18 78) 0%, oklch(0.62 0.20 60) 100%)" } },
-  { label: "Super-Héros",color: "gold",        style: { background: "linear-gradient(135deg, oklch(0.85 0.18 85) 0%, oklch(0.65 0.20 50) 100%)" } },
+  { label: "Wax Orange", color: "terracotta", style: { background: "linear-gradient(135deg, oklch(0.58 0.20 38) 0%, oklch(0.48 0.18 28) 100%)" } },
+  { label: "Kente Royal", color: "deep-blue",  style: { background: "linear-gradient(135deg, oklch(0.22 0.10 255) 0%, oklch(0.16 0.08 268) 100%)" } },
+  { label: "Boubou Vert", color: "leaf",        style: { background: "linear-gradient(135deg, oklch(0.52 0.16 148) 0%, oklch(0.42 0.14 165) 100%)" } },
+  { label: "Pagne Ocre",   color: "ocre",        style: { background: "linear-gradient(135deg, oklch(0.76 0.18 78) 0%, oklch(0.62 0.20 60) 100%)" } },
+  { label: "Super Griot", color: "gold",        style: { background: "linear-gradient(135deg, oklch(0.85 0.18 85) 0%, oklch(0.65 0.20 50) 100%)" } },
 ];
 const accessories = ["✕", "🎩", "🕶️", "🧣", "👑", "🎧", "🎭", "🎒"];
 const accessoryLabels = ["Aucun", "Chapeau", "Lunettes", "Foulard", "Couronne", "Casque", "Masque", "Sac"];
@@ -48,8 +48,8 @@ function AvatarPage() {
           <ArrowLeft className="size-4 text-deep-blue" />
         </Link>
         <div>
-          <p className="text-[10px] font-display font-extrabold uppercase tracking-widest text-ocre">Crée ton personnage</p>
-          <h1 className="font-display text-xl font-extrabold text-deep-blue leading-tight">Mon Avatar Fun</h1>
+          <p className="text-[10px] font-display font-extrabold uppercase tracking-widest text-ocre">Le compagnon de Zao</p>
+          <h1 className="font-display text-xl font-extrabold text-deep-blue leading-tight">Mon Apprenti Griot</h1>
         </div>
       </div>
 
@@ -223,7 +223,7 @@ function AvatarPage() {
             }}
           >
             <span className="relative z-10 flex items-center justify-center gap-2">
-              Valider mon Personnage 🚀
+              Valider mon Apprenti Griot 🚀
             </span>
             <div className="absolute inset-0 animate-shimmer opacity-50 pointer-events-none" />
           </button>

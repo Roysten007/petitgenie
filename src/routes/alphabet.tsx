@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { ArrowLeft, Volume2, ChevronLeft, ChevronRight } from "lucide-react";
 import { useSpeechSynthesis } from "@/hooks/use-speech-synthesis";
 import { sfx } from "@/lib/sfx";
+import { Mascot } from "@/components/kpodji/Mascot";
 
 export const Route = createFileRoute("/alphabet")({
   component: AlphabetPage,
@@ -14,11 +15,56 @@ export const Route = createFileRoute("/alphabet")({
 
 /* ─── Data ──────────────────────────────────────────────── */
 const LETTERS = [
-  { letter: "A", fr: "Ananas",   en: "Apple",      emoji: "🍍", color: "terracotta", hint: "A comme Ananas · A for Apple" },
-  { letter: "B", fr: "Baobab",   en: "Banana",     emoji: "🌴", color: "leaf",       hint: "B comme Baobab · B for Banana" },
-  { letter: "C", fr: "Citron",   en: "Coconut",    emoji: "🍋", color: "ocre",       hint: "C comme Citron · C for Coconut" },
-  { letter: "D", fr: "Dattes",   en: "Dragon fruit",emoji: "🌴",color: "river",      hint: "D comme Dattes · D for Dragon fruit" },
-  { letter: "E", fr: "Éléphant", en: "Elephant",   emoji: "🐘", color: "terracotta", hint: "E comme Éléphant · E for Elephant" },
+  {
+    letter: "A",
+    fr: "Ananas",
+    en: "Pineapple",
+    emoji: "🍍",
+    color: "terracotta",
+    hint: "A comme Ananas · A for Pineapple",
+    dialogueFr: "Regarde cet ananas bien sucré ! En français, on dit 'A comme Ananas'.",
+    dialogueEn: "And in English, my friend, we say 'A as in Pineapple'. Try to repeat after me: Pineapple!"
+  },
+  {
+    letter: "B",
+    fr: "Baobab",
+    en: "Banana",
+    emoji: "🌴",
+    color: "leaf",
+    hint: "B comme Baobab · B for Banana",
+    dialogueFr: "Voici le grand baobab majestueux. 'B comme Baobab' est l'arbre de notre village.",
+    dialogueEn: "In English, we also love the sweet 'B for Banana'! Let's sing: Banana!"
+  },
+  {
+    letter: "C",
+    fr: "Citron",
+    en: "Coconut",
+    emoji: "🍋",
+    color: "ocre",
+    hint: "C comme Citron · C for Coconut",
+    dialogueFr: "Aïe, ce citron jaune est très acide ! 'C comme Citron' fait faire des grimaces !",
+    dialogueEn: "But in English, let's open a fresh 'C for Coconut'. Mmm, coconut is sweet!"
+  },
+  {
+    letter: "D",
+    fr: "Dattes",
+    en: "Dragon fruit",
+    emoji: "🌴",
+    color: "river",
+    hint: "D comme Dattes · D for Dragon fruit",
+    dialogueFr: "Ces dattes brunes du marché sont très douces. 'D comme Dattes'.",
+    dialogueEn: "In English, discover the colorful 'D for Dragon fruit'! Say it: Dragon fruit!"
+  },
+  {
+    letter: "E",
+    fr: "Éléphant",
+    en: "Elephant",
+    emoji: "🐘",
+    color: "terracotta",
+    hint: "E comme Éléphant · E for Elephant",
+    dialogueFr: "Écoute le barrissement ! 'E comme Éléphant', le géant de la forêt !",
+    dialogueEn: "In English, it's also 'E for Elephant'! Let's trump: Elephant!"
+  },
   { letter: "F", fr: "Figue",    en: "Fig",         emoji: "🍇", color: "leaf",       hint: "F comme Figue · F for Fig" },
   { letter: "G", fr: "Goyave",   en: "Guava",      emoji: "🍈", color: "ocre",       hint: "G comme Goyave · G for Guava" },
   { letter: "H", fr: "Hibiscus", en: "Hibiscus",   emoji: "🌺", color: "river",      hint: "H comme Hibiscus · H for Hibiscus" },
@@ -90,10 +136,13 @@ function BigLetterCard({ item, lang }: { item: typeof LETTERS[0]; lang: "fr" | "
       return;
     }
 
-    // Kid-friendly slow voice sequence: French first, then English
+    // Use custom griot storytelling text if defined, otherwise fallback to simple spelling
+    const frText = (item as any).dialogueFr || `${item.letter}, comme, ${item.fr}.`;
+    const enText = (item as any).dialogueEn || `${item.letter}, as in, ${item.en}.`;
+
     speakQueue([
-      { text: `${item.letter}, comme, ${item.fr}.`, lang: "fr" },
-      { text: `${item.letter}, as in, ${item.en}.`, lang: "en" }
+      { text: frText, lang: "fr" },
+      { text: enText, lang: "en" }
     ]);
   };
 
@@ -208,12 +257,17 @@ function BigLetterCard({ item, lang }: { item: typeof LETTERS[0]; lang: "fr" | "
         </div>
       </div>
 
-      {/* Hint */}
-      <div
-        className="w-full rounded-2xl px-4 py-2.5 text-center"
-        style={{ background: "oklch(0.22 0.10 255 / 8%)", border: "1px solid oklch(0.22 0.10 255 / 12%)" }}
-      >
-        <p className="font-display font-bold text-deep-blue/70 text-[12px]">{item.hint}</p>
+      {/* Griot dialogue bubble */}
+      <div className="w-full bg-[#E06500]/10 border border-[#E06500]/25 rounded-3xl p-4 flex gap-3 items-start animate-fade-in mt-2 relative">
+        <Mascot size={56} variant={isPlaying ? "walk" : "idle"} animate={isPlaying ? "float" : "none"} className="shrink-0" />
+        <div className="flex-1">
+          <span className="text-[9px] font-display font-extrabold text-[#E06500] uppercase tracking-wider">🎙️ Zao le Griot raconte...</span>
+          <p className="font-display font-bold text-deep-blue text-xs leading-relaxed mt-0.5">
+            {lang === "fr" 
+              ? ((item as any).dialogueFr || `« Écoute attentivement ! En français, c'est '${item.letter} comme ${item.fr}'. »`)
+              : ((item as any).dialogueEn || `“Listen closely! In English, it is '${item.letter} for ${item.en}'.”`)}
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -280,8 +334,8 @@ function AlphabetPage() {
           <ArrowLeft className="size-4 text-deep-blue" />
         </Link>
         <div>
-          <p className="text-[10px] font-display font-extrabold uppercase tracking-widest text-terracotta">Apprendre</p>
-          <h1 className="font-display text-xl font-extrabold text-deep-blue leading-tight">L'Alphabet</h1>
+          <p className="text-[10px] font-display font-extrabold uppercase tracking-widest text-terracotta">Chapitre 1</p>
+          <h1 className="font-display text-xl font-extrabold text-deep-blue leading-tight">Lettres du Marché</h1>
         </div>
         {/* Progress pill */}
         <div className="ml-auto glass rounded-full px-3 py-1">

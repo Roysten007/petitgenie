@@ -49,9 +49,17 @@ function ParentsLogin() {
             <span className="text-3xl">🔐</span>
           </div>
           <h1 className="font-display text-2xl font-extrabold text-white mb-2">Sécurité parentale</h1>
-          <p className="text-white/70 text-sm max-w-[28ch] mb-6">
+          <p className="text-white/70 text-xs max-w-[30ch] mb-4">
             Pour entrer, résous ce calcul simple pour prouver que tu es un adulte.
           </p>
+
+          {/* Pedagogical Grounding Statement */}
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-left max-w-sm mb-5 text-[11px] text-white/80 leading-relaxed">
+            <p className="font-display font-extrabold text-[9px] text-ocre uppercase tracking-wider mb-1">
+              🌱 Fondement Pédagogique
+            </p>
+            Kpodji réinvente l'apprentissage bilingue pour enfants en mariant <strong>l'oralité traditionnelle du griot</strong> avec le renforcement cognitif interactif. En ancrant chaque notion dans un conte culturel ouest-africain, nous stimulons la mémoire auditive et favorisons un bilinguisme naturel.
+          </div>
 
           <form onSubmit={handleVerifyGate} className="w-full max-w-[240px] space-y-4">
             <div className="bg-white/10 rounded-2xl p-4 border border-white/20">

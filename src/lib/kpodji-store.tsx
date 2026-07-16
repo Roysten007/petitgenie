@@ -75,14 +75,14 @@ export interface KpodjiState {
 const KpodjiCtx = createContext<KpodjiState | null>(null);
 
 const initialBadges: Badge[] = [
-  { id: "b1", name: "Petit Compteur", desc: "10 additions réussies", emoji: "🔢", unlocked: true },
-  { id: "b2", name: "Petit Griot", desc: "3 histoires écoutées", emoji: "📖", unlocked: true },
-  { id: "b3", name: "Hello Friend", desc: "20 mots anglais appris", emoji: "👋", unlocked: true },
-  { id: "b4", name: "Marchand Malin", desc: "Faire la monnaie 5 fois", emoji: "💰", unlocked: false },
-  { id: "b5", name: "Poisson d'eau", desc: "Terminer la Rivière", emoji: "🐠", unlocked: false },
-  { id: "b6", name: "Chanteur", desc: "10 comptines écoutées", emoji: "🎵", unlocked: false },
-  { id: "b7", name: "Baobab", desc: "30 jours de série", emoji: "🌳", unlocked: false },
-  { id: "b8", name: "Champion", desc: "Tous les quartiers finis", emoji: "🏆", unlocked: false },
+  { id: "b1", name: "Totem de la Tortue", desc: "Sagesse & Calcul · 10 additions réussies", emoji: "🐢", unlocked: true },
+  { id: "b2", name: "Totem du Lièvre", desc: "Parole & Récit · 3 contes écoutés", emoji: "🐇", unlocked: true },
+  { id: "b3", name: "Totem du Singe bilingue", desc: "Langage & Échanges · 20 mots d'anglais appris", emoji: "🐒", unlocked: true },
+  { id: "b4", name: "Totem du Calao", desc: "Commerce & Monnaie · Faire la monnaie 5 fois", emoji: "🐦", unlocked: false },
+  { id: "b5", name: "Totem du Poisson d'eau", desc: "Découverte · Terminer le chapitre de la Rivière", emoji: "🐠", unlocked: false },
+  { id: "b6", name: "Totem du Tisserin", desc: "Chants & Rythmes · 10 comptines écoutées", emoji: "🎵", unlocked: false },
+  { id: "b7", name: "Totem du Baobab majestueux", desc: "Ancrage & Patience · 30 jours de feu de camp allumé", emoji: "🌳", unlocked: false },
+  { id: "b8", name: "Totem du Lion", desc: "Grand Griot · Terminer tous les chapitres de Kpodji", emoji: "🦁", unlocked: false },
 ];
 
 const stories: Story[] = [
