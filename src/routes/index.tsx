@@ -58,7 +58,7 @@ const getPathNodes = (bracket: "4-6" | "7-8" | "9-10"): LevelNode[] => {
 const ZIG_ZAG = [0, 50, 70, 50, 0, -50, -70, -50]; // repeating pattern
 
 function Village() {
-  const { childName, districts, avatar, seeds, streak, stars, activeProfile } = useKpodji();
+  const { childName, districts, avatar, seeds, streak, stars, activeProfile, lang } = useKpodji();
   const faces = ["🙂", "😃", "😊", "🤗", "😎", "🤩", "🦁", "🐰", "🦊", "🐼"];
   const currentFace = faces[avatar.face] || "🙂";
  
