@@ -252,6 +252,33 @@ function ParentDashboard() {
           </div>
         </div>
 
+        {/* Reset Demo Button inside Parents space */}
+        <div className="bg-white ring-1 ring-black/5 rounded-3xl p-5 shadow-sm space-y-3">
+          <h3 className="text-[11px] font-display font-extrabold uppercase tracking-widest text-muted-foreground">
+            Contrôle Démo
+          </h3>
+          <button
+            onClick={() => {
+              sfx.playSuccess();
+              updateProfileSettings(activeProfileId, {
+                timeSpentThisWeek: 0,
+                completedChapters: [],
+                levelAlphabet: 1,
+                levelMarche: 1,
+                levelScience: 1,
+                lastRaconteFiche: null,
+                xp: 0,
+                seeds: 0,
+              });
+              alert("Démo réinitialisée ! Tout est remis à zéro.");
+            }}
+            className="w-full h-12 bg-terracotta/10 text-terracotta hover:bg-terracotta/20 rounded-2xl font-display font-extrabold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 border border-terracotta/35"
+          >
+            <i className="fa-solid fa-rotate-left" />
+            Réinitialiser la Démo
+          </button>
+        </div>
+
         {/* Weekly Chart */}
         <div className="bg-white ring-1 ring-black/5 rounded-3xl p-5 shadow-sm">
           <p className="text-[11px] font-display font-extrabold uppercase tracking-widest text-muted-foreground mb-3">

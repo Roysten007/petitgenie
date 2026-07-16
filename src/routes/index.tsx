@@ -5,6 +5,7 @@ import { useKpodji } from "@/lib/kpodji-store";
 import { Mascot } from "@/components/kpodji/Mascot";
 import { PhoneFrame } from "@/components/kpodji/PhoneFrame";
 import { useState, useEffect, useRef } from "react";
+import { sfx } from "@/lib/sfx";
 
 export const Route = createFileRoute("/")({
   component: Village,
@@ -33,7 +34,22 @@ const pathNodes: LevelNode[] = [
 const ZIG_ZAG = [0, 55, -55, 0]; // repeating pattern
 
 function Village() {
-  const { childName, avatar, seeds, streak, activeProfile, lang, completedChapters, xp } = useKpodji();
+  const { childName, avatar, seeds, streak, activeProfile, lang, completedChapters, xp, activeProfileId, updateProfileSettings } = useKpodji();
+  
+  const handleResetDemo = () => {
+    sfx.playSuccess();
+    updateProfileSettings(activeProfileId, {
+      timeSpentThisWeek: 0,
+      completedChapters: [],
+      levelAlphabet: 1,
+      levelMarche: 1,
+      levelScience: 1,
+      lastRaconteFiche: null,
+      xp: 0,
+      seeds: 0,
+    });
+  };
+
   const faces = ["🙂", "😃", "😊", "🤗", "😎", "🤩", "🦁", "🐰", "🦊", "🐼"];
   const currentFace = faces[avatar.face] || "🙂";
  
@@ -183,9 +199,23 @@ function Village() {
 
           <p className="text-[10px] text-white/40">Limite de temps atteinte ({activeProfile.timeLimit} min / {activeProfile.timeSpentThisWeek} min cumulées)</p>
           
-          <Link to="/parents" className="text-xs font-display font-extrabold text-ocre hover:underline mt-2 flex items-center gap-1">
-            <i className="fa-solid fa-lock-open text-[10px]" /> Espace Adulte (Paramètres)
-          </Link>
+          <div className="flex flex-col gap-2.5 w-full max-w-xs mt-3">
+            <button
+              onClick={handleResetDemo}
+              className="w-full py-3 bg-ocre hover:bg-ocre/90 text-deep-blue rounded-2xl font-display font-extrabold text-xs uppercase tracking-wider shadow-lg active:scale-95 transition flex items-center justify-center gap-2"
+            >
+              <i className="fa-solid fa-rotate-left" />
+              Recommencer la Démo
+            </button>
+
+            <Link
+              to="/parents"
+              className="w-full py-3 bg-white/10 hover:bg-white/20 text-white rounded-2xl font-display font-extrabold text-xs uppercase tracking-wider active:scale-95 transition flex items-center justify-center gap-2 border border-white/10"
+            >
+              <i className="fa-solid fa-lock-open" />
+              Espace Adulte
+            </Link>
+          </div>
         </div>
       </PhoneFrame>
     );
