@@ -3,6 +3,7 @@ import { PhoneFrame } from "@/components/kpodji/PhoneFrame";
 import { TopBar } from "@/components/kpodji/TopBar";
 import { MascotBubble } from "@/components/kpodji/Mascot";
 import { useKpodji } from "@/lib/kpodji-store";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/defi")({
   component: DefiPage,
@@ -12,6 +13,11 @@ const DAYS = ["L", "M", "M", "J", "V", "S", "D"];
 
 function DefiPage() {
   const { streak } = useKpodji();
+
+  const todayIndex = useMemo(() => {
+    const d = new Date().getDay(); // 0: Dimanche, 1: Lundi, etc.
+    return d === 0 ? 6 : d - 1; // Ajuster pour LMMJVSD
+  }, []);
 
   return (
     <PhoneFrame>
@@ -123,8 +129,8 @@ function DefiPage() {
           {/* Day dots */}
           <div className="grid grid-cols-7 gap-1.5">
             {DAYS.map((d, i) => {
-              const done = i < streak;
-              const today = i === streak;
+              const today = i === todayIndex;
+              const done = (i < todayIndex && todayIndex - i < streak) || (today && streak > 0);
               return (
                 <div key={i} className="flex flex-col items-center gap-1">
                   <span className="text-[9px] font-display font-extrabold text-muted-foreground">{d}</span>

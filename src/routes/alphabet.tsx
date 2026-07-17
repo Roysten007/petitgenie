@@ -107,16 +107,22 @@ const quizQuestions: Record<1 | 2 | 3, QuizQuestion[]> = {
     { level: 1, prompt: "Quelle lettre commence le mot Ananas 🍍 ?", choices: ["A", "B", "C", "D"], answer: "A", hint: "Rappelle-toi : A comme Ananas !", audioText: "Quelle lettre commence le mot Ananas ?" },
     { level: 1, prompt: "B comme Baobab 🌴 commence par quelle lettre ?", choices: ["A", "B", "C", "E"], answer: "B", hint: "Regarde bien : B pour Baobab !", audioText: "B comme Baobab commence par quelle lettre ?" },
     { level: 1, prompt: "Quelle lettre correspond à l'Éléphant 🐘 ?", choices: ["D", "C", "E", "B"], answer: "E", hint: "Écoute Petit Génie : E comme Éléphant !", audioText: "Quelle lettre correspond à l'Éléphant ?" },
+    { level: 1, prompt: "Quelle lettre commence le mot Cacao 🍫 ?", choices: ["A", "B", "C", "D"], answer: "C", hint: "C comme Cacao !", audioText: "Quelle lettre commence le mot Cacao ?" },
+    { level: 1, prompt: "D comme Datte 🌴 commence par quelle lettre ?", choices: ["A", "B", "C", "D"], answer: "D", hint: "Regarde bien : D pour Datte !", audioText: "D comme Datte commence par quelle lettre ?" },
   ],
   2: [
-    { level: 2, prompt: "En anglais, quel fruit commence par B (Banana) ?", choices: ["Banane", "Ananas", "Citron", "Dattes"], answer: "Banane", hint: "Banana en anglais se traduit par Banane !", audioText: "En anglais, quel fruit commence par B ?" },
+    { level: 2, prompt: "Comment dit-on 'Banane' en anglais ?", choices: ["Banana", "Apple", "Mango", "Date"], answer: "Banana", hint: "Banane se dit Banana en anglais !", audioText: "Comment dit-on Banane en anglais ?" },
     { level: 2, prompt: "Que signifie 'Pineapple' 🍍 en français ?", choices: ["Ananas", "Citron", "Dattes", "Baobab"], answer: "Ananas", hint: "L'ananas se dit Pineapple en anglais !", audioText: "Que signifie Pineapple en français ?" },
-    { level: 2, prompt: "Que signifie 'Coconut' 🍋 en français ?", choices: ["Noix de coco", "Citron", "Dattes", "Mangue"], answer: "Noix de coco", hint: "Coconut est une grosse noix de coco !", audioText: "Que signifie Coconut en français ?" },
+    { level: 2, prompt: "Que signifie 'Coconut' 🥥 en français ?", choices: ["Noix de coco", "Citron", "Dattes", "Mangue"], answer: "Noix de coco", hint: "Coconut est la noix de coco !", audioText: "Que signifie Coconut en français ?" },
+    { level: 2, prompt: "Que signifie 'Apple' 🍎 en français ?", choices: ["Pomme", "Banane", "Orange", "Citron"], answer: "Pomme", hint: "Apple se traduit par Pomme !", audioText: "Que signifie Apple en français ?" },
+    { level: 2, prompt: "Que signifie 'Lemon' 🍋 en français ?", choices: ["Citron", "Mangue", "Noix de coco", "Orange"], answer: "Citron", hint: "Lemon est un citron jaune !", audioText: "Que signifie Lemon en français ?" },
   ],
   3: [
     { level: 3, prompt: "Quel mot commence par le même son que 'Dragon fruit' 🌴 ?", choices: ["Ananas", "Baobab", "Citron", "Dattes"], answer: "Dattes", hint: "Dragon fruit et Dattes commencent par la lettre D !", audioText: "Quel mot commence par le même son que Dragon fruit ?" },
     { level: 3, prompt: "Quel fruit commence par le son 'P' en anglais (Pineapple) ?", choices: ["Ananas", "Banane", "Citron", "Dattes"], answer: "Ananas", hint: "Pineapple commence par le son P !", audioText: "Quel fruit commence par le son P en anglais ?" },
     { level: 3, prompt: "Dans 'Elephant' 🐘, quelle est la première lettre ?", choices: ["E", "A", "I", "O"], answer: "E", hint: "Elephant s'écrit avec un E !", audioText: "Dans Elephant, quelle est la première lettre ?" },
+    { level: 3, prompt: "Quel mot commence par le même son que 'Carrot' 🥕 ?", choices: ["Cacao", "Ananas", "Dattes", "Baobab"], answer: "Cacao", hint: "Carrot et Cacao commencent par le son K (lettre C) !", audioText: "Quel mot commence par le même son que Carrot ?" },
+    { level: 3, prompt: "Quel fruit commence par le son 'M' en anglais ?", choices: ["Mango 🥭", "Banana 🍌", "Apple 🍎", "Lemon 🍋"], answer: "Mango 🥭", hint: "Mango (mangue) commence par la lettre M !", audioText: "Quel fruit commence par le son M en anglais ?" },
   ],
 };
 
@@ -245,7 +251,7 @@ function AlphabetPage() {
       setSpeechBubble(currentQuestion.prompt);
       speakQueue([{ text: currentQuestion.audioText, lang: "fr" }]);
     }
-  }, [currentQuestion, mode]);
+  }, [currentQuestion, mode, speakQueue]);
 
   const handleSpeakQuestion = () => {
     speakQueue([{ text: currentQuestion.audioText, lang: "fr" }]);

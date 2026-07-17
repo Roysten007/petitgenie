@@ -37,7 +37,7 @@ const fiches: Record<string, FicheTemplate> = {
     title: "Sciences & Cycle de la Nature",
     emoji: "⚡",
     content: "L'enfant a exploré le cycle de la pluie (nuages et condensation) et les besoins vitaux des plantes (eau et lumière du soleil).",
-    question: "Posez-lui la question : 'De quoi les petites pousses du jardin de Kpodji ont-elles besoin pour grandir fort ?'",
+    question: "Posez-lui la question : 'De quoi les petites pousses du jardin ont-elles besoin pour grandir fort ?'",
     bonusXp: 50,
   },
 };
@@ -166,10 +166,10 @@ function RacontePage() {
 
             {/* Return to trail */}
             <Link
-              to="/"
+              to="/reward"
               className="w-full h-14 rounded-2xl bg-leaf text-white font-display font-extrabold text-sm uppercase tracking-wider shadow-lg active:scale-98 transition flex items-center justify-center gap-2"
             >
-              Retourner au sentier ➔
+              Découvrir mes récompenses ! 🌟
             </Link>
 
           </div>

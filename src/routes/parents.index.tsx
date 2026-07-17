@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PhoneFrame } from "@/components/kpodji/PhoneFrame";
 import { useState } from "react";
+import { sfx } from "@/lib/sfx";
 
 export const Route = createFileRoute("/parents/")({
   component: ParentsLogin,
@@ -16,19 +17,30 @@ function ParentsLogin() {
   const handleVerifyGate = (e: React.FormEvent) => {
     e.preventDefault();
     if (mathAnswer.trim() === "56") {
+      sfx.playSuccess();
       setGatePassed(true);
       setErrorMsg("");
     } else {
+      sfx.playError();
       setErrorMsg("Calcul incorrect. Réessaie !");
     }
   };
 
   const push = (n: string) => {
+    setErrorMsg(""); // Effacer l'erreur lors de la saisie
     if (pin.length >= 4) return;
     const next = [...pin, n];
     setPin(next);
     if (next.length === 4) {
-      setTimeout(() => navigate({ to: "/parents/dashboard" }), 300);
+      const pinStr = next.join("");
+      if (pinStr === "1234") {
+        sfx.playSuccess();
+        setTimeout(() => navigate({ to: "/parents/dashboard" }), 300);
+      } else {
+        sfx.playError();
+        setErrorMsg("Code PIN incorrect. Réessaie !");
+        setPin([]);
+      }
     }
   };
 
@@ -93,15 +105,21 @@ function ParentsLogin() {
             <i className="fa-solid fa-user-shield text-deep-blue text-3xl" />
           </div>
           <h1 className="font-display text-2xl font-extrabold text-white mb-2">Code adulte requis</h1>
-          <p className="text-white/70 text-sm max-w-[28ch] mb-8">
-            Entrez votre code secret à 4 chiffres pour accéder au suivi.
+          <p className="text-white/70 text-xs max-w-[28ch] mb-4">
+            Entrez votre code secret à 4 chiffres pour accéder au suivi (Démo : 1234).
           </p>
 
-          <div className="flex gap-3 mb-8">
+          {errorMsg && (
+            <p className="text-terracotta bg-white rounded-xl py-1.5 px-3 text-xs font-bold mb-4 animate-shake">
+              {errorMsg}
+            </p>
+          )}
+
+          <div className="flex gap-3 mb-6">
             {[0, 1, 2, 3].map((i) => (
               <div
                 key={i}
-                className={`size-4 rounded-full ${pin[i] !== undefined ? "bg-ocre animate-ping" : "bg-white/20"}`}
+                className={`size-4 rounded-full ${pin[i] !== undefined ? "bg-ocre animate-pulse" : "bg-white/20"}`}
               />
             ))}
           </div>

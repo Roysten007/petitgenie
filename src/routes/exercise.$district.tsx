@@ -43,7 +43,7 @@ const questionsByDistrictAndLevel: Record<DistrictId, Record<1 | 2 | 3, Question
     1: [
       { level: 1, intro: "Sciences • Animaux", zaoIntro: "Dans la basse-cour du village, Petit Génie écoute le réveil des oiseaux à plumes.", prompt: "Quel animal pond des œufs ?", choices: ["La chèvre 🐐", "La poule 🐔", "Le chien 🐕"], answer: 1, hint: "La poule pond des œufs frais tous les matins !" },
       { level: 1, intro: "Sciences • Plantes", zaoIntro: "Pour faire pousser le beau mil de notre potager et le nourrir, que devons-nous lui donner ?", prompt: "De quoi les plantes ont-elles besoin pour grandir ?", choices: ["De soleil et d'eau ☀️💧", "De bonbons 🍬", "De jouets 🧸"], answer: 0, hint: "Sans lumière ni eau, la plante ne peut pas grandir." },
-      { level: 1, intro: "Sciences • Climat", zaoIntro: "Petit Génie lève la tête et observe le ciel bleu. Il sent le vent souffler sur les feuilles.", prompt: "Quel astre nous donne de la lumière le jour ?", choices: ["La lune 🌙", "Le soleil ☀️", "Une étoile ⭐️"], answer: 1, hint: "C'est le soleil qui brille fort dans le ciel de Kpodji." },
+      { level: 1, intro: "Sciences • Climat", zaoIntro: "Petit Génie lève la tête et observe le ciel bleu. Il sent le vent souffler sur les feuilles.", prompt: "Quel astre nous donne de la lumière le jour ?", choices: ["La lune 🌙", "Le soleil ☀️", "Une étoile ⭐️"], answer: 1, hint: "C'est le soleil qui brille fort dans le ciel du village." },
     ],
     2: [
       { level: 2, intro: "Sciences • Le Corps", zaoIntro: "Pour courir très vite dans la savane et rester fort comme Petit Génie, notre corps a besoin de vitamines.", prompt: "De quoi ton corps a-t-il besoin pour grandir fort ?", choices: ["Des vitamines 🍎", "Des sodas 🥤", "De rien"], answer: 0, hint: "Les fruits frais contiennent des vitamines essentielles." },
@@ -75,7 +75,7 @@ const districtMeta: Record<DistrictId, { gradient: string; shadow: string; label
 function Exercise() {
   const { district } = Route.useParams();
   const navigate = useNavigate();
-  const { addSeeds, advanceDistrict, activeProfile, levelMarche, levelScience, updateLevel, addXp } = useKpodji();
+  const { addSeeds, advanceDistrict, levelMarche, levelScience, updateLevel, addXp } = useKpodji();
   
   const distId = (district as DistrictId) || "marche";
 

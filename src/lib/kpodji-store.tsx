@@ -1,4 +1,5 @@
-import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
+import { createContext, useContext, useMemo, useState, useEffect, type ReactNode } from "react";
+import { sfx } from "./sfx";
 
 export type DistrictId = "marche" | "ecole" | "riviere" | "place" | "science" | "morale";
 export type Lang = "fr" | "en";
@@ -95,14 +96,14 @@ export interface KpodjiState {
 const KpodjiCtx = createContext<KpodjiState | null>(null);
 
 const initialBadges: Badge[] = [
-  { id: "b1", name: "Totem de la Tortue", desc: "Sagesse & Calcul · 10 additions réussies", emoji: "🐢", unlocked: true },
-  { id: "b2", name: "Totem du Lièvre", desc: "Parole & Récit · 3 contes écoutés", emoji: "🐇", unlocked: true },
-  { id: "b3", name: "Totem du Singe bilingue", desc: "Langage & Échanges · 20 mots d'anglais appris", emoji: "🐒", unlocked: true },
+  { id: "b1", name: "Totem de la Tortue", desc: "Sagesse & Calcul · 10 additions réussies", emoji: "🐢", unlocked: false },
+  { id: "b2", name: "Totem du Lièvre", desc: "Parole & Récit · 3 contes écoutés", emoji: "🐇", unlocked: false },
+  { id: "b3", name: "Totem du Singe bilingue", desc: "Langage & Échanges · 20 mots d'anglais appris", emoji: "🐒", unlocked: false },
   { id: "b4", name: "Totem du Calao", desc: "Commerce & Monnaie · Faire la monnaie 5 fois", emoji: "🐦", unlocked: false },
   { id: "b5", name: "Totem du Poisson d'eau", desc: "Découverte · Terminer le chapitre de la Rivière", emoji: "🐠", unlocked: false },
   { id: "b6", name: "Totem du Tisserin", desc: "Chants & Rythmes · 10 comptines écoutées", emoji: "🎵", unlocked: false },
   { id: "b7", name: "Totem du Baobab majestueux", desc: "Ancrage & Patience · 30 jours de feu de camp allumé", emoji: "🌳", unlocked: false },
-  { id: "b8", name: "Totem du Lion", desc: "Grand Griot · Terminer tous les chapitres de Kpodji", emoji: "🦁", unlocked: false },
+  { id: "b8", name: "Totem du Lion", desc: "Grand Griot · Terminer tous les chapitres de Petit Génie", emoji: "🦁", unlocked: false },
 ];
 
 const stories: Story[] = [
@@ -130,8 +131,8 @@ const stories: Story[] = [
     duration: "5 min",
     emoji: "🦜",
     color: "river",
-    storyTextFr: "Zao rencontra un joli perroquet vert sur une branche. L'oiseau chantait : 'Hello, good morning!'. Étonné, Zao lui répondit : 'Bonjour!'. L'oiseau lui apprit à dire 'friend' pour ami et 'thank you' pour merci. Depuis, tous les enfants du village chantent en anglais avec le perroquet magique.",
-    storyTextEn: "Zao met a beautiful green parrot sitting on a branch. The bird sang: 'Hello, good morning!'. Surprised, Zao replied: 'Bonjour!'. The bird taught him to say 'friend' and 'thank you'. Since then, all the children in the village sing in English with the magic parrot."
+    storyTextFr: "Petit Génie rencontra un joli perroquet vert sur une branche. L'oiseau chantait : 'Hello, good morning!'. Étonné, Petit Génie lui répondit : 'Bonjour!'. L'oiseau lui apprit à dire 'friend' pour ami et 'thank you' pour merci. Depuis, tous les enfants du village chantent en anglais avec le perroquet magique.",
+    storyTextEn: "Petit Génie met a beautiful green parrot sitting on a branch. The bird sang: 'Hello, good morning!'. Surprised, Petit Génie replied: 'Bonjour!'. The bird taught him to say 'friend' and 'thank you'. Since then, all the children in the village sing in English with the magic parrot."
   },
   {
     id: "s4",
@@ -139,16 +140,39 @@ const stories: Story[] = [
     duration: "7 min",
     emoji: "🌊",
     color: "leaf",
-    storyTextFr: "La rivière du village de Kpodji brille sous le soleil. Les poissons y dansent en formant des ronds dorés. Quand les enfants chantent au bord de l'eau, la rivière se met à murmurer de douces mélodies. Elle apporte de l'eau fraîche pour faire pousser les mangues et soigner les fleurs.",
-    storyTextEn: "The river of Kpodji village shines under the sun. The fish dance in the water, making golden circles. When the children sing by the river, the water whispers sweet melodies. It brings fresh water to grow juicy mangoes and feed the flowers."
+    storyTextFr: "La rivière du village brille sous le soleil. Les poissons y dansent en formant des ronds dorés. Quand les enfants chantent au bord de l'eau, la rivière se met à murmurer de douces mélodies. Elle apporte de l'eau fraîche pour faire pousser les mangues et soigner les fleurs.",
+    storyTextEn: "The village river shines under the sun. The fish dance in the water, making golden circles. When the children sing by the river, the water whispers sweet melodies. It brings fresh water to grow juicy mangoes and feed the flowers."
   }
 ];
 
 const rhymes: Story[] = [
-  { id: "r1", title: { fr: "Un, deux, trois mangues", en: "One, two, three mangoes" }, duration: "1 min", emoji: "🥭", color: "ocre" },
-  { id: "r2", title: { fr: "Couleurs du marché", en: "Market Colors" }, duration: "2 min", emoji: "🎨", color: "terracotta" },
-  { id: "r3", title: { fr: "ABC du village", en: "Village ABC" }, duration: "2 min", emoji: "🔤", color: "river" },
-  { id: "r4", title: { fr: "Bonjour le soleil", en: "Hello Sunshine" }, duration: "1 min", emoji: "☀️", color: "leaf" },
+  { 
+    id: "r1", 
+    title: { fr: "Un, deux, trois mangues", en: "One, two, three mangoes" }, 
+    duration: "1 min", 
+    emoji: "🥭", 
+    color: "ocre",
+    storyTextFr: "Une mangue sur le grand baobab, deux mangues pour le lièvre agile, trois mangues pour le petit singe. Cueillons-les ensemble en chantant !",
+    storyTextEn: "One mango on the big baobab tree, two mangoes for the quick hare, three mangoes for the little monkey. Let's harvest them together as we sing!"
+  },
+  { 
+    id: "r2", 
+    title: { fr: "Le grand baobab", en: "The Great Baobab" }, 
+    duration: "1 min", 
+    emoji: "🌳", 
+    color: "leaf",
+    storyTextFr: "Baobab géant aux branches fortes, tu abrites le lion et l'oiseau. Tes racines boivent la pluie fraîche pour rester fort et nous protéger sous ton ombre.",
+    storyTextEn: "Giant baobab with strong branches, you shelter the lion and the bird. Your roots drink the fresh rain to stay strong and shield us with your shadow."
+  },
+  { 
+    id: "r3", 
+    title: { fr: "La pluie tombe", en: "Rain is Falling" }, 
+    duration: "1 min", 
+    emoji: "🌧️", 
+    color: "river",
+    storyTextFr: "Le nuage gris se condense, l'eau s'écoule du ciel. Les graines se réveillent, les petites plantes poussent. Merci la pluie magique du village !",
+    storyTextEn: "The gray cloud condenses, water flows from the sky. The seeds wake up, the little plants grow. Thank you, magical rain of our village!"
+  }
 ];
 
 const initialProfiles: ChildProfile[] = [
@@ -162,7 +186,7 @@ const initialProfiles: ChildProfile[] = [
     streak: 4,
     levelBracket: "7-8",
     timeLimit: 30,
-    timeSpentThisWeek: 45,
+    timeSpentThisWeek: 12,
     soundEnabled: true,
     notifEnabled: true,
     districts: [
@@ -190,7 +214,7 @@ const initialProfiles: ChildProfile[] = [
     streak: 2,
     levelBracket: "4-6",
     timeLimit: 15,
-    timeSpentThisWeek: 20,
+    timeSpentThisWeek: 5,
     soundEnabled: true,
     notifEnabled: false,
     districts: [
@@ -218,7 +242,7 @@ const initialProfiles: ChildProfile[] = [
     streak: 12,
     levelBracket: "9-10",
     timeLimit: 45,
-    timeSpentThisWeek: 90,
+    timeSpentThisWeek: 18,
     soundEnabled: false,
     notifEnabled: true,
     districts: [
@@ -251,6 +275,25 @@ export function KpodjiProvider({ children }: { children: ReactNode }) {
     return profiles.find((p) => p.id === activeProfileId) || profiles[0];
   }, [profiles, activeProfileId]);
 
+  useEffect(() => {
+    sfx.soundEnabled = activeProfile.soundEnabled ?? true;
+  }, [activeProfile.soundEnabled]);
+
+  const currentBadges = useMemo(() => {
+    return initialBadges.map((badge) => {
+      let unlocked = false;
+      if (badge.id === "b1") unlocked = activeProfile.xp >= 300;
+      else if (badge.id === "b2") unlocked = activeProfile.completedChapters.includes("alphabet") || activeProfile.xp >= 200;
+      else if (badge.id === "b3") unlocked = activeProfile.xp >= 500;
+      else if (badge.id === "b4") unlocked = activeProfile.completedChapters.includes("marche");
+      else if (badge.id === "b5") unlocked = activeProfile.completedChapters.includes("science");
+      else if (badge.id === "b6") unlocked = activeProfile.seeds >= 150;
+      else if (badge.id === "b7") unlocked = activeProfile.streak >= 5;
+      else if (badge.id === "b8") unlocked = activeProfile.completedChapters.includes("alphabet") && activeProfile.completedChapters.includes("marche") && activeProfile.completedChapters.includes("science");
+      return { ...badge, unlocked };
+    });
+  }, [activeProfile.xp, activeProfile.completedChapters, activeProfile.seeds, activeProfile.streak]);
+
   const value = useMemo<KpodjiState>(
     () => ({
       childName: activeProfile.name,
@@ -260,7 +303,7 @@ export function KpodjiProvider({ children }: { children: ReactNode }) {
       streak: activeProfile.streak,
       lang,
       districts: activeProfile.districts,
-      badges: initialBadges,
+      badges: currentBadges,
       stories,
       rhymes,
       profiles,

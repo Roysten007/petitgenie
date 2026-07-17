@@ -4,7 +4,6 @@ import mascotWalkImg from "@/assets/mascot_walk.jpg";
 import mascotJumpImg from "@/assets/mascot_jump.jpg";
 import mascotLandImg from "@/assets/mascot_land.jpg";
 import mascotIdleImg from "@/assets/mascot_idle.jpg";
-import { useState } from "react";
 
 interface MascotProps {
   size?: number;
@@ -37,7 +36,7 @@ export function Mascot({
   return (
     <img
       src={src}
-      alt="Zao, le lièvre griot"
+      alt="Petit Génie"
       width={size}
       height={size}
       className={`${animClass} select-none ${className}`}

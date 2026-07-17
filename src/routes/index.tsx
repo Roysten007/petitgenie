@@ -24,7 +24,7 @@ interface LevelNode {
 }
 
 const pathNodes: LevelNode[] = [
-  { id: "alphabet", type: "alphabet", label: "Alphabet & Sons", emoji: "🔤", color: "#E06500", descFr: "Les lettres du marché de Kpodji", descEn: "Kpodji market letters and sounds" },
+  { id: "alphabet", type: "alphabet", label: "Alphabet & Sons", emoji: "🔤", color: "#E06500", descFr: "Les lettres du marché du village", descEn: "Village market letters and sounds" },
   { id: "marche", type: "exercise", districtId: "marche", label: "Le Marché", emoji: "🥭", color: "#a34e36", descFr: "Calculs en FCFA et troc de fruits", descEn: "FCFA math and fruit trading" },
   { id: "science", type: "exercise", districtId: "science", label: "Sciences", emoji: "⚡", color: "#489e28", descFr: "L'eau, les plantes et les animaux", descEn: "Water, plants and wild animals" },
   { id: "english", type: "comptines", label: "English Corner", emoji: "🇬🇧", color: "#1cb0f6", descFr: "Chansons et dialogues de voyage", descEn: "Travel songs and small talks" },
@@ -87,8 +87,8 @@ function Village() {
     }
     if (completedChapters.includes("alphabet") && !completedChapters.includes("marche")) {
       return lang === "fr"
-        ? "« Merveilleux ! Tu as appris les premières lettres. Maintenant, viens au marché de Kpodji pour aider Fatou à faire ses comptes et faire du troc ! »"
-        : "“Wonderful! You learned the first letters. Now, join Kpodji market to help Fatou calculate prices and trade fruits!”";
+        ? "« Merveilleux ! Tu as appris les premières lettres. Maintenant, viens au marché du village pour aider Fatou à faire ses comptes et faire du troc ! »"
+        : "“Wonderful! You learned the first letters. Now, join the village market to help Fatou calculate prices and trade fruits!”";
     }
     if (completedChapters.includes("marche") && !completedChapters.includes("science")) {
       return lang === "fr"

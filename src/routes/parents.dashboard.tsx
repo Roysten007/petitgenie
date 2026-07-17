@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PhoneFrame } from "@/components/kpodji/PhoneFrame";
 import { useKpodji } from "@/lib/kpodji-store";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { sfx } from "@/lib/sfx";
 
 export const Route = createFileRoute("/parents/dashboard")({

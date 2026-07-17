@@ -1,7 +1,9 @@
 class SfxService {
   private ctx: AudioContext | null = null;
+  public soundEnabled = true;
 
   private getContext() {
+    if (!this.soundEnabled) return null;
     if (!this.ctx && typeof window !== "undefined") {
       try {
         const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
@@ -18,6 +20,7 @@ class SfxService {
   }
 
   playTap() {
+    if (!this.soundEnabled) return;
     const ctx = this.getContext();
     if (!ctx) return;
     
@@ -43,6 +46,7 @@ class SfxService {
   }
 
   playCorrect() {
+    if (!this.soundEnabled) return;
     const ctx = this.getContext();
     if (!ctx) return;
     
@@ -76,6 +80,7 @@ class SfxService {
   }
 
   playWrong() {
+    if (!this.soundEnabled) return;
     const ctx = this.getContext();
     if (!ctx) return;
     
@@ -101,7 +106,12 @@ class SfxService {
     }
   }
 
+  playError() {
+    this.playWrong();
+  }
+
   playSuccess() {
+    if (!this.soundEnabled) return;
     const ctx = this.getContext();
     if (!ctx) return;
     

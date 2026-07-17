@@ -148,7 +148,7 @@ function RootComponent() {
               <div className="size-9 rounded-xl bg-gradient-to-tr from-ocre to-terracotta flex items-center justify-center font-display font-extrabold text-white text-lg shadow-sm">
                 Pg
               </div>
-              <span className="font-display font-extrabold text-xl tracking-wide text-deep-blue">petit génie</span>
+              <span className="font-display font-extrabold text-xl tracking-wide text-deep-blue">Petit Génie</span>
             </div>
 
             {/* Menu Items */}

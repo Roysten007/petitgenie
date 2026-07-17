@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PhoneFrame } from "@/components/kpodji/PhoneFrame";
 import { useKpodji } from "@/lib/kpodji-store";
+import { sfx } from "@/lib/sfx";
 
 export const Route = createFileRoute("/parents/parametres")({
   component: ParametresPage,
@@ -10,18 +11,22 @@ function ParametresPage() {
   const { activeProfile, updateProfileSettings, lang, setLang } = useKpodji();
 
   const handleUpdateLimit = (min: number) => {
+    sfx.playTap();
     updateProfileSettings(activeProfile.id, { timeLimit: min });
   };
 
   const handleUpdateBracket = (bracket: "4-6" | "7-8" | "9-10") => {
+    sfx.playTap();
     updateProfileSettings(activeProfile.id, { levelBracket: bracket });
   };
 
   const handleToggleSound = (val: boolean) => {
+    sfx.playTap();
     updateProfileSettings(activeProfile.id, { soundEnabled: val });
   };
 
   const handleToggleNotif = (val: boolean) => {
+    sfx.playTap();
     updateProfileSettings(activeProfile.id, { notifEnabled: val });
   };
 
@@ -116,7 +121,22 @@ function ParametresPage() {
         <Group title="Progression">
           <button
             onClick={() => {
-              if (confirm(`Veux-tu vraiment effacer le progrès de ${activeProfile.name} ?`)) {
+              sfx.playTap();
+              if (confirm(`Voulez-vous vraiment effacer la progression de ${activeProfile.name} ?`)) {
+                updateProfileSettings(activeProfile.id, {
+                  xp: 0,
+                  seeds: 0,
+                  stars: 0,
+                  streak: 0,
+                  timeSpentThisWeek: 0,
+                  levelAlphabet: 1,
+                  levelMarche: 1,
+                  levelScience: 1,
+                  lastRaconteFiche: null,
+                  completedChapters: [],
+                  districts: activeProfile.districts.map((d) => ({ ...d, progress: 0 }))
+                });
+                sfx.playSuccess();
                 alert("Réinitialisation effectuée !");
               }
             }}

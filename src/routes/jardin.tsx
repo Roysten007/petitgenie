@@ -5,26 +5,32 @@ import { BottomNav } from "@/components/kpodji/BottomNav";
 import { MascotRing } from "@/components/kpodji/Mascot";
 import { useKpodji } from "@/lib/kpodji-store";
 import jardinImg from "@/assets/jardin.jpg";
+import { useMemo } from "react";
 
 export const Route = createFileRoute("/jardin")({
   component: Jardin,
 });
 
-const plants = [
-  { emoji: "🌱", stage: "Petite pousse", grown: true,  size: 32 },
-  { emoji: "🌿", stage: "Jeune plante",  grown: true,  size: 38 },
-  { emoji: "🌾", stage: "Herbe haute",   grown: true,  size: 44 },
-  { emoji: "🌸", stage: "Fleur",         grown: true,  size: 40 },
-  { emoji: "🌳", stage: "Arbre",         grown: true,  size: 52 },
-  { emoji: "🌻", stage: "Tournesol",     grown: false, size: 38 },
-  { emoji: "🌴", stage: "Palmier",       grown: false, size: 44 },
-  { emoji: "🥭", stage: "Manguier",      grown: false, size: 40 },
-];
-
 function Jardin() {
   const { seeds } = useKpodji();
-  const pct = Math.min(100, Math.round((seeds / 150) * 100));
-  const nextPlant = Math.max(0, 150 - seeds);
+
+  const plants = useMemo(() => {
+    return [
+      { emoji: "🌱", stage: "Petite pousse", grown: true,  size: 32 }, // Toujours disponible au début
+      { emoji: "🌿", stage: "Jeune plante",  grown: seeds >= 20,  size: 38 },
+      { emoji: "🌾", stage: "Herbe haute",   grown: seeds >= 50,  size: 44 },
+      { emoji: "🌸", stage: "Fleur",         grown: seeds >= 80,  size: 40 },
+      { emoji: "🌳", stage: "Arbre",         grown: seeds >= 110, size: 52 },
+      { emoji: "🌻", stage: "Tournesol",     grown: seeds >= 140, size: 38 },
+      { emoji: "🌴", stage: "Palmier",       grown: seeds >= 170, size: 44 },
+      { emoji: "🥭", stage: "Manguier",      grown: seeds >= 200, size: 40 },
+    ];
+  }, [seeds]);
+
+  const pct = Math.min(100, Math.round((seeds / 200) * 100));
+  
+  const nextThreshold = [20, 50, 80, 110, 140, 170, 200].find(t => t > seeds) || 200;
+  const nextPlant = Math.max(0, nextThreshold - seeds);
 
   return (
     <PhoneFrame>
